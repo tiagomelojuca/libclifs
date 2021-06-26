@@ -103,6 +103,7 @@ typedef struct stiffnessMatrix {
     double reducedRotation[3][3];
     double rotation[12][12];
     double transposeRotation[12][12];
+    double global;
 } StiffnessMatrix;
 
 // --------------------------------------------------------------------------------
@@ -121,6 +122,8 @@ void _fillLocalStiffnessMatrix(double _matrix[12][12], Bar* _bar);
 void _fillReducedRotationMatrix(double _matrix[3][3], Bar* _bar);
 void _fillRotationMatrix(double _matrix[12][12], double _reducedMatrix[3][3]);
 void _fillTransposeRotationMatrix(double _matrix[12][12], double _other[12][12]);
+void _fillGlobalStiffnessMatrix(double _matrix[12][12],
+                                double _tRotation[12][12], double _local[12][12]);
 
 // MAKE THIS HEADER FILE COMPATIBLE WITH C++ CODE TOO (END) -----------------------
 #ifdef __cplusplus

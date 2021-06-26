@@ -200,3 +200,17 @@ void _fillTransposeRotationMatrix(double _matrix[12][12], double _other[12][12])
 }
 
 //--------------------------------------------------------------------------------
+
+void _fillGlobalStiffnessMatrix(double _matrix[12][12],
+                                double _tRotation[12][12], double _local[12][12])
+{
+    for(int i = 0; i < 12; i++) {
+        for(int j = 0; j < 12; j++) {
+            for(int k = 0; k < 12; k++) {
+                _matrix[i][j] += _tRotation[i][k] * _local[k][j];
+            }
+        }
+    }
+}
+
+//--------------------------------------------------------------------------------
