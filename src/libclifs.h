@@ -124,6 +124,11 @@ void _setBarPropsLowLevel(Bar* _bar, Node _n1, Node _n2, Point _auxvec,
 void setBarProps(Bar* _bar, Node _n1, Node _n2, Point _auxvec,
                  Material* _material, Section* _section);
 
+void setMaterialProps(Material* _material, double _e, double _g);
+
+void setSectionProps(Section* _section, double _a,
+                     double _iy, double _iz, double _j);
+
 void _fillMatrixDefaultValue(double _matrix[12][12], double _defaultValue);
 void _fillLocalStiffnessMatrix(double _matrix[12][12], Bar* _bar);
 void _fillReducedRotationMatrix(double _matrix[3][3], Bar* _bar);

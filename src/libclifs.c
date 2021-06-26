@@ -43,6 +43,25 @@ void setBarProps(Bar* _bar, Node _n1, Node _n2, Point _auxvec,
 
 // --------------------------------------------------------------------------------
 
+void setMaterialProps(Material* _material, double _e, double _g)
+{
+    _material->e = _e;
+    _material->g = _g;
+}
+
+// --------------------------------------------------------------------------------
+
+void setSectionProps(Section* _section, double _a,
+                     double _iy, double _iz, double _j)
+{
+    _section->a = _a;
+    _section->iy = _iy;
+    _section->iz = _iz;
+    _section->j = _j;
+}
+
+// --------------------------------------------------------------------------------
+
 void _fillMatrixDefaultValue(double _matrix[12][12], double _defaultValue)
 {
     for(int i = 0; i < 12; i++) {
