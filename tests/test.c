@@ -1,8 +1,6 @@
 #include <stdio.h>
 #include "../src/libclifs.h"
 
-// cmd /c "gcc tests/test.c src/libclifs.c -o build/a.exe && .\build\a"
-
 void printMatrix(double _matrix[12][12]) {
     for(int i = 0; i < 12; i++) {
         for(int j = 0; j < 12; j++) {
