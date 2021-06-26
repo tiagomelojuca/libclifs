@@ -33,6 +33,10 @@ extern "C" {
 // remind the user that the type name is really a symbolic abbreviation
 typedef unsigned char BYTE;
 
+#ifndef __cplusplus
+    typedef enum { false = 0, true = !false } bool;
+#endif
+
 // You can use typedef to give a name to your user defined data types as well
 // For example, you can use typedef with structure to define a new data type
 // and then use that data type to define structure variables directly
@@ -45,14 +49,39 @@ typedef struct point {
     double z;
 } Point;
 
+typedef struct degreesOfFreedom {
+    bool x;
+    bool y;
+    bool z;
+} DegreesOfFreedom;
+
+typedef struct nodalLoad {
+    double fx;
+    double fy;
+    double fz;
+    double mx;
+    double my;
+    double mz;
+} NodalLoad;
+
+typedef struct node {
+    Point position;
+    DegreesOfFreedom translation;
+    DegreesOfFreedom rotation;
+    NodalLoad load;
+} Node;
+
 typedef struct bar {
-    double L;
-    double E;
-    double G;
-    double A;
-    double Iy;
-    double Iz;
-    double J;
+    Node node1;
+    Node node2;
+    Point auxvec;
+    double l;
+    double e;
+    double g;
+    double a;
+    double iy;
+    double iz;
+    double j;
 } Bar;
 
 void fillLocalStiffnessMatrix(double _matrix[12][12], Bar* _bar);
