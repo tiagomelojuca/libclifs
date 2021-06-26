@@ -232,3 +232,15 @@ void setStiffnessMatrix(StiffnessMatrix* _sMatrix, Bar* _associatedBar)
 }
 
 // --------------------------------------------------------------------------------
+
+void setFrameBarProps(FrameBar* _frameBar, Node _n1, Node _n2, Point _auxvec,
+                      Material* _material, Section* _section)
+{
+    Bar* pBar = &(_frameBar->bar);
+    setBarProps(pBar, _n1, _n2, _auxvec, _material, _section);
+
+    StiffnessMatrix* pStiffnessMatrix = &(_frameBar->stiffnessMatrix);
+    setStiffnessMatrix(pStiffnessMatrix, pBar);
+}
+
+// --------------------------------------------------------------------------------

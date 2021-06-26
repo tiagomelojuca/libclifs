@@ -106,6 +106,13 @@ typedef struct stiffnessMatrix {
     double global[12][12];
 } StiffnessMatrix;
 
+typedef struct frameBar {
+    Bar bar;
+    Material material;
+    Section section;
+    StiffnessMatrix stiffnessMatrix;
+} FrameBar;
+
 // --------------------------------------------------------------------------------
 
 double _calcDistBetweenPoints(Point _p1, Point _p2);
@@ -126,6 +133,9 @@ void _fillGlobalStiffnessMatrix(double _matrix[12][12],
                                 double _tRotation[12][12], double _local[12][12]);
 
 void setStiffnessMatrix(StiffnessMatrix* _sMatrix, Bar* _associatedBar);
+
+void setFrameBarProps(FrameBar* _frameBar, Node _n1, Node _n2, Point _auxvec,
+                      Material* _material, Section* _section);
 
 // MAKE THIS HEADER FILE COMPATIBLE WITH C++ CODE TOO (END) -----------------------
 #ifdef __cplusplus

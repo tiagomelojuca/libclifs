@@ -37,13 +37,10 @@ int main()
     v1.y = 0.707;
     v1.z = 0.707;
 
-    Bar b1;
-    setBarProps(&b1, n1, n2, v1, &concrete, &rectangle);
+    FrameBar b1;
+    setFrameBarProps(&b1, n1, n2, v1, &concrete, &rectangle);
 
-    StiffnessMatrix m1;
-    setStiffnessMatrix(&m1, &b1);
-
-    printMatrix(m1.global);
+    printMatrix(b1.stiffnessMatrix.global);
 
     return 0;
 }
