@@ -115,9 +115,14 @@ typedef struct frameBar {
 
 // --------------------------------------------------------------------------------
 
+void setPointCoords(Point* _point, double _x, double _y, double _z);
+
 double _calcDistBetweenPoints(Point _p1, Point _p2);
 
 void setDegreesOfFreedomProps(DegreesOfFreedom* _dof, bool _x, bool _y, bool _z);
+
+void setNodalLoadValues(NodalLoad* _load, double _fx, double _fy, double _fz,
+                        double _mx, double _my, double _mz);
 
 void setNodeProps(Node* _node, Point _position,
                   DegreesOfFreedom _translation, DegreesOfFreedom _rotation,

@@ -19,19 +19,13 @@ int main()
     setSectionProps(&rectangle, 0.01, 0.00001, 0.00001, 0.00001);
 
     Point p1;
-    p1.x = 0;
-    p1.y = 0;
-    p1.z = 0;
+    setPointCoords(&p1, 0.0, 0.0, 0.0);
 
     Point p2;
-    p2.x = 0;
-    p2.y = 0;
-    p2.z = 2.44;
+    setPointCoords(&p2, 0.0, 0.0, 2.44);
 
     Point v1;
-    v1.x = 0;
-    v1.y = 0.707;
-    v1.z = 0.707;
+    setPointCoords(&v1, 0.0, 0.707, 0.707);
 
     DegreesOfFreedom allFixed;
     setDegreesOfFreedomProps(&allFixed, false, false, false);
@@ -40,6 +34,7 @@ int main()
     setDegreesOfFreedomProps(&allFixed, true, true, true);
 
     NodalLoad load;
+    setNodalLoadValues(&load, 0, 0, 0, 0, 0, 0);
 
     Node n1;
     setNodeProps(&n1, p1, allFixed, allFixed, load);

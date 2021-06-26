@@ -4,6 +4,15 @@
 
 // --------------------------------------------------------------------------------
 
+void setPointCoords(Point* _point, double _x, double _y, double _z)
+{
+    _point->x = _x;
+    _point->y = _y;
+    _point->z = _z;
+}
+
+// --------------------------------------------------------------------------------
+
 double _calcDistBetweenPoints(Point _p1, Point _p2)
 {
     double dx = _p1.x - _p2.x;
@@ -20,6 +29,19 @@ void setDegreesOfFreedomProps(DegreesOfFreedom* _dof, bool _x, bool _y, bool _z)
     _dof->x = _x;
     _dof->y = _y;
     _dof->z = _z;
+}
+
+// --------------------------------------------------------------------------------
+
+void setNodalLoadValues(NodalLoad* _load, double _fx, double _fy, double _fz,
+                        double _mx, double _my, double _mz)
+{
+    _load->fx = _fx;
+    _load->fy = _fy;
+    _load->fz = _fz;
+    _load->mx = _mx;
+    _load->my = _my;
+    _load->mz = _mz;
 }
 
 // --------------------------------------------------------------------------------
