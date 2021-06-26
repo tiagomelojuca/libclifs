@@ -2,7 +2,7 @@
 
 #include <math.h>
 
- //--------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------
 
 void _setBarPropsLowLevel(Bar* _bar, Node _n1, Node _n2, Point _auxvec,
                           double _e, double _g,
@@ -19,7 +19,7 @@ void _setBarPropsLowLevel(Bar* _bar, Node _n1, Node _n2, Point _auxvec,
     _bar->j = _j;
 }
 
- //--------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------
 
 void _setBarPropsHighLevel(Bar* _bar, Node _n1, Node _n2, Point _auxvec,
                            Material* _material, Section* _section)
@@ -29,7 +29,18 @@ void _setBarPropsHighLevel(Bar* _bar, Node _n1, Node _n2, Point _auxvec,
                          _section->a, _section->iy, _section->iz, _section->j);
 }
 
- //--------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------
+
+void _fillNullMatrix(double _matrix[12][12])
+{
+    for(int i = 0; i < 12; i++) {
+        for(int j = 0; j < 12; j++) {
+            _matrix[i][j] = 0;
+        }
+    }
+}
+
+//--------------------------------------------------------------------------------
 
 void _fillLocalStiffnessMatrix(double _matrix[12][12], Bar* _bar)
 {
@@ -114,7 +125,7 @@ void _fillReducedRotationMatrix(double _matrix[3][3], Bar* _bar)
     _matrix[1][2] = _matrix[0][1] * _matrix[2][0] - _matrix[0][0] * _matrix[2][1];
 }
 
- //--------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------
 
 double _calcDistBetweenPoints(Point _p1, Point _p2)
 {
@@ -125,4 +136,4 @@ double _calcDistBetweenPoints(Point _p1, Point _p2)
     return sqrt(pow(dx, 2) + pow(dy, 2) + pow(dz, 2));
 }
 
- //--------------------------------------------------------------------------------
+//--------------------------------------------------------------------------------

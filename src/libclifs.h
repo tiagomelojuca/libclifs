@@ -109,6 +109,7 @@ void _setBarPropsHighLevel(Bar* _bar, Node _n1, Node _n2, Point _auxvec,
 
 double _calcDistBetweenPoints(Point _p1, Point _p2);
 
+void _fillNullMatrix(double _matrix[12][12]);
 void _fillLocalStiffnessMatrix(double _matrix[12][12], Bar* _bar);
 void _fillReducedRotationMatrix(double _matrix[3][3], Bar* _bar);
 
