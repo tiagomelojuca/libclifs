@@ -13,29 +13,39 @@ void printMatrix(double _matrix[12][12]) {
 int main()
 {
     Material concrete;
-    concrete.e = 100000;
-    concrete.g = 38462;
+    setMaterialProps(&concrete, 100000, 38462);
 
     Section rectangle;
-    rectangle.a = 0.01;
-    rectangle.iy = 0.00001;
-    rectangle.iz = 0.00001;
-    rectangle.j = 0.00001;
+    setSectionProps(&rectangle, 0.01, 0.00001, 0.00001, 0.00001);
 
-    Node n1;
-    n1.position.x = 0;
-    n1.position.y = 0;
-    n1.position.z = 0;
+    Point p1;
+    p1.x = 0;
+    p1.y = 0;
+    p1.z = 0;
 
-    Node n2;
-    n2.position.x = 0;
-    n2.position.y = 0;
-    n2.position.z = 2.44;
+    Point p2;
+    p2.x = 0;
+    p2.y = 0;
+    p2.z = 2.44;
 
     Point v1;
     v1.x = 0;
     v1.y = 0.707;
     v1.z = 0.707;
+
+    DegreesOfFreedom allFixed;
+    setDegreesOfFreedom(&allFixed, false, false, false);
+
+    DegreesOfFreedom allFree;
+    setDegreesOfFreedom(&allFixed, true, true, true);
+
+    NodalLoad load;
+
+    Node n1;
+    setNodeProps(&n1, p1, allFixed, allFixed, load);
+
+    Node n2;
+    setNodeProps(&n2, p2, allFree, allFree, load);
 
     FrameBar b1;
     setFrameBarProps(&b1, n1, n2, v1, &concrete, &rectangle);
