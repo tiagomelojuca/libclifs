@@ -189,3 +189,14 @@ void _fillRotationMatrix(double _matrix[12][12], double _reducedMatrix[3][3])
 }
 
 //--------------------------------------------------------------------------------
+
+void _fillInverseRotationMatrix(double _matrix[12][12], double _other[12][12])
+{
+    for(int i = 0; i < 12; i++) {
+        for(int j = 0; j < 12; j++) {
+            _matrix[i][j] = _other[j][i];
+        }
+    }
+}
+
+//--------------------------------------------------------------------------------

@@ -98,6 +98,13 @@ typedef struct section {
     double j;
 } Section;
 
+typedef struct stiffnessMatrix {
+    double local[12][12];
+    double reducedRotation[3][3];
+    double rotation[12][12];
+    double inverseRotation[12][12];
+} StiffnessMatrix;
+
 // --------------------------------------------------------------------------------
 
 double _calcDistBetweenPoints(Point _p1, Point _p2);
@@ -113,6 +120,7 @@ void _fillNullMatrix(double _matrix[12][12]);
 void _fillLocalStiffnessMatrix(double _matrix[12][12], Bar* _bar);
 void _fillReducedRotationMatrix(double _matrix[3][3], Bar* _bar);
 void _fillRotationMatrix(double _matrix[12][12], double _reducedMatrix[3][3]);
+void _fillInverseRotationMatrix(double _matrix[12][12], double _other[12][12]);
 
 // MAKE THIS HEADER FILE COMPATIBLE WITH C++ CODE TOO (END) -----------------------
 #ifdef __cplusplus
