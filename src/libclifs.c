@@ -2,7 +2,7 @@
 
 #include <math.h>
 
-//--------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
 
 double _calcDistBetweenPoints(Point _p1, Point _p2)
 {
@@ -13,7 +13,7 @@ double _calcDistBetweenPoints(Point _p1, Point _p2)
     return sqrt(pow(dx, 2) + pow(dy, 2) + pow(dz, 2));
 }
 
-//--------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
 
 void _setBarPropsLowLevel(Bar* _bar, Node _n1, Node _n2, Point _auxvec,
                           double _e, double _g,
@@ -31,7 +31,7 @@ void _setBarPropsLowLevel(Bar* _bar, Node _n1, Node _n2, Point _auxvec,
     _bar->j = _j;
 }
 
-//--------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
 
 void _setBarPropsHighLevel(Bar* _bar, Node _n1, Node _n2, Point _auxvec,
                            Material* _material, Section* _section)
@@ -41,7 +41,7 @@ void _setBarPropsHighLevel(Bar* _bar, Node _n1, Node _n2, Point _auxvec,
                          _section->a, _section->iy, _section->iz, _section->j);
 }
 
-//--------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
 
 void _fillMatrixDefaultValue(double _matrix[12][12], double _defaultValue)
 {
@@ -52,7 +52,7 @@ void _fillMatrixDefaultValue(double _matrix[12][12], double _defaultValue)
     }
 }
 
-//--------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
 
 void _fillLocalStiffnessMatrix(double _matrix[12][12], Bar* _bar)
 {
@@ -106,7 +106,7 @@ void _fillLocalStiffnessMatrix(double _matrix[12][12], Bar* _bar)
     _matrix[11][11] = (4 * E * Iz) / L;
 }
 
-//--------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
 
 void _fillReducedRotationMatrix(double _matrix[3][3], Bar* _bar)
 {
@@ -137,7 +137,7 @@ void _fillReducedRotationMatrix(double _matrix[3][3], Bar* _bar)
     _matrix[1][2] = _matrix[0][1] * _matrix[2][0] - _matrix[0][0] * _matrix[2][1];
 }
 
-//--------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
 
 void _fillRotationMatrix(double _matrix[12][12], double _reducedMatrix[3][3])
 {
@@ -188,7 +188,7 @@ void _fillRotationMatrix(double _matrix[12][12], double _reducedMatrix[3][3])
     _matrix[11][11] = _reducedMatrix[2][2];
 }
 
-//--------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
 
 void _fillTransposeRotationMatrix(double _matrix[12][12], double _other[12][12])
 {
@@ -199,7 +199,7 @@ void _fillTransposeRotationMatrix(double _matrix[12][12], double _other[12][12])
     }
 }
 
-//--------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
 
 void _fillGlobalStiffnessMatrix(double _matrix[12][12],
                                 double _tRotation[12][12], double _local[12][12])
@@ -213,7 +213,7 @@ void _fillGlobalStiffnessMatrix(double _matrix[12][12],
     }
 }
 
-//--------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
 
 void _fillStiffnessMatrix(StiffnessMatrix* _stiffnessMatrix, Bar* _associatedBar)
 {
@@ -223,4 +223,4 @@ void _fillStiffnessMatrix(StiffnessMatrix* _stiffnessMatrix, Bar* _associatedBar
     _fillMatrixDefaultValue(_stiffnessMatrix->global, 5.0);
 }
 
-//--------------------------------------------------------------------------------
+// --------------------------------------------------------------------------------
