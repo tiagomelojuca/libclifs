@@ -43,11 +43,11 @@ void _setBarPropsHighLevel(Bar* _bar, Node _n1, Node _n2, Point _auxvec,
 
 //--------------------------------------------------------------------------------
 
-void _fillNullMatrix(double _matrix[12][12])
+void _fillMatrixDefaultValue(double _matrix[12][12], double _defaultValue)
 {
     for(int i = 0; i < 12; i++) {
         for(int j = 0; j < 12; j++) {
-            _matrix[i][j] = 0;
+            _matrix[i][j] = _defaultValue;
         }
     }
 }
@@ -211,6 +211,17 @@ void _fillGlobalStiffnessMatrix(double _matrix[12][12],
             }
         }
     }
+}
+
+//--------------------------------------------------------------------------------
+
+void _fillStiffnessMatrix(StiffnessMatrix* _stiffnessMatrix, Bar* _associatedBar)
+{
+    _fillMatrixDefaultValue(_stiffnessMatrix->local, 1.0);
+    _fillMatrixDefaultValue(_stiffnessMatrix->reducedRotation, 2.0);
+    _fillMatrixDefaultValue(_stiffnessMatrix->rotation, 3.0);
+    _fillMatrixDefaultValue(_stiffnessMatrix->transposeRotation, 4.0);
+    _fillMatrixDefaultValue(_stiffnessMatrix->global, 5.0);
 }
 
 //--------------------------------------------------------------------------------
