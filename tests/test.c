@@ -34,10 +34,10 @@ int main()
     v1.z = 0.707;
 
     DegreesOfFreedom allFixed;
-    setDegreesOfFreedom(&allFixed, false, false, false);
+    setDegreesOfFreedomProps(&allFixed, false, false, false);
 
     DegreesOfFreedom allFree;
-    setDegreesOfFreedom(&allFixed, true, true, true);
+    setDegreesOfFreedomProps(&allFixed, true, true, true);
 
     NodalLoad load;
 

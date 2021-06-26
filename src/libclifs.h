@@ -117,7 +117,7 @@ typedef struct frameBar {
 
 double _calcDistBetweenPoints(Point _p1, Point _p2);
 
-void setDegreesOfFreedom(DegreesOfFreedom* _dof, bool _x, bool _y, bool _z);
+void setDegreesOfFreedomProps(DegreesOfFreedom* _dof, bool _x, bool _y, bool _z);
 
 void setNodeProps(Node* _node, Point _position,
                   DegreesOfFreedom _translation, DegreesOfFreedom _rotation,

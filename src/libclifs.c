@@ -15,7 +15,7 @@ double _calcDistBetweenPoints(Point _p1, Point _p2)
 
 // --------------------------------------------------------------------------------
 
-void setDegreesOfFreedom(DegreesOfFreedom* _dof, bool _x, bool _y, bool _z)
+void setDegreesOfFreedomProps(DegreesOfFreedom* _dof, bool _x, bool _y, bool _z)
 {
     _dof->x = _x;
     _dof->y = _y;
