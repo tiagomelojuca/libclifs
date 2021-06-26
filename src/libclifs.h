@@ -107,9 +107,10 @@ void _setBarPropsLowLevel(Bar* _bar, Node _n1, Node _n2, Point _auxvec,
 void _setBarPropsHighLevel(Bar* _bar, Node _n1, Node _n2, Point _auxvec,
                            Material* _material, Section* _section);
 
-double _calcDistBetweenPoints(Point p1, Point p2);
+double _calcDistBetweenPoints(Point _p1, Point _p2);
 
 void _fillLocalStiffnessMatrix(double _matrix[12][12], Bar* _bar);
+void _fillReducedRotationMatrix(double _matrix[3][3], Bar* _bar);
 
 // MAKE THIS HEADER FILE COMPATIBLE WITH C++ CODE TOO (END) -----------------------
 #ifdef __cplusplus
