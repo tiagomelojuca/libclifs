@@ -28,6 +28,7 @@ extern "C" {
 
 // HEADER CONTENT -----------------------------------------------------------------
 
+// TYPES DECLARATION
 // REMINDER TO MYSELF (SOURCE-> www.tutorialspoint.com/cprogramming/c_typedef.htm)
 // By convention, uppercase letters are used for these definitions to
 // remind the user that the type name is really a symbolic abbreviation
@@ -84,8 +85,31 @@ typedef struct bar {
     double j;
 } Bar;
 
-void _fillLocalStiffnessMatrix(double _matrix[12][12], Bar* _bar);
+// Optionally, we can use high level abstractions
+typedef struct material {
+    double e;
+    double g;
+} Material;
+
+typedef struct section {
+    double a;
+    double iy;
+    double iz;
+    double j;
+} Section;
+
+// --------------------------------------------------------------------------------
+
+void _setBarPropsLowLevel(Bar* _bar, Node _n1, Node _n2, Point _auxvec,
+                          double _e, double _g,
+                          double _a, double _iy, double _iz, double _j);
+
+void _setBarPropsHighLevel(Bar* _bar, Node _n1, Node _n2, Point _auxvec,
+                           Material* _material, Section* _section);
+
 double _calcDistBetweenPoints(Point p1, Point p2);
+
+void _fillLocalStiffnessMatrix(double _matrix[12][12], Bar* _bar);
 
 // MAKE THIS HEADER FILE COMPATIBLE WITH C++ CODE TOO (END) -----------------------
 #ifdef __cplusplus
