@@ -84,7 +84,8 @@ typedef struct bar {
     double j;
 } Bar;
 
-void fillLocalStiffnessMatrix(double _matrix[12][12], Bar* _bar);
+void _fillLocalStiffnessMatrix(double _matrix[12][12], Bar* _bar);
+double _calcDistBetweenPoints(Point p1, Point p2);
 
 // MAKE THIS HEADER FILE COMPATIBLE WITH C++ CODE TOO (END) -----------------------
 #ifdef __cplusplus
@@ -93,3 +94,5 @@ void fillLocalStiffnessMatrix(double _matrix[12][12], Bar* _bar);
 
 // HEADER GUARD (END) -------------------------------------------------------------
 #endif // LIBCLIFS_H
+
+// --------------------------------------------------------------------------------

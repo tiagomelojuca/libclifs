@@ -2,7 +2,9 @@
 
 #include <math.h>
 
-void filllocalStiffnessMatrix(double _matrix[12][12], Bar* _bar)
+// --------------------------------------------------------------------------------
+
+void _filllocalStiffnessMatrix(double _matrix[12][12], Bar* _bar)
 {
     double l  = _bar->l;
     double e  = _bar->e;
@@ -61,3 +63,18 @@ void filllocalStiffnessMatrix(double _matrix[12][12], Bar* _bar)
     _matrix[7][11]  = (-1)*((6*e*iz)/pow(l,2));
     _matrix[11][11] = (4*e*iz)/l;
 }
+
+// --------------------------------------------------------------------------------
+
+double _calcDistBetweenPoints(Point p1, Point p2)
+{
+    double dx = p1.x - p2.x;
+    double dy = p1.y - p2.y;
+    double dz = p1.z - p2.z;
+    
+    return sqrt(
+        pow(dx, 2) + pow(dy, 2) + pow(dz, 2)
+    );
+}
+
+// --------------------------------------------------------------------------------
