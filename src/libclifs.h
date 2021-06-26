@@ -112,6 +112,7 @@ void _setBarPropsHighLevel(Bar* _bar, Node _n1, Node _n2, Point _auxvec,
 void _fillNullMatrix(double _matrix[12][12]);
 void _fillLocalStiffnessMatrix(double _matrix[12][12], Bar* _bar);
 void _fillReducedRotationMatrix(double _matrix[3][3], Bar* _bar);
+void _fillRotationMatrix(double _matrix[12][12], double _reducedMatrix[3][3]);
 
 // MAKE THIS HEADER FILE COMPATIBLE WITH C++ CODE TOO (END) -----------------------
 #ifdef __cplusplus

@@ -110,7 +110,7 @@ void _fillLocalStiffnessMatrix(double _matrix[12][12], Bar* _bar)
 
 void _fillReducedRotationMatrix(double _matrix[3][3], Bar* _bar)
 {
-    // This is all civil engineering business logic, doesn't bother at all
+    // This is all civil engineering business logic, don't bother at all
     _matrix[0][0] = (_bar->node2.position.x - _bar->node1.position.x) / _bar->l;
     _matrix[0][1] = (_bar->node2.position.y - _bar->node1.position.y) / _bar->l;
     _matrix[0][2] = (_bar->node2.position.z - _bar->node1.position.z) / _bar->l;
@@ -135,6 +135,57 @@ void _fillReducedRotationMatrix(double _matrix[3][3], Bar* _bar)
     _matrix[1][0] = _matrix[0][2] * _matrix[2][1] - _matrix[0][1] * _matrix[2][2];
     _matrix[1][1] = _matrix[0][0] * _matrix[2][2] - _matrix[0][2] * _matrix[2][0];
     _matrix[1][2] = _matrix[0][1] * _matrix[2][0] - _matrix[0][0] * _matrix[2][1];
+}
+
+//--------------------------------------------------------------------------------
+
+void _fillRotationMatrix(double _matrix[12][12], double _reducedMatrix[3][3])
+{
+    // Civil engineering business logic, don't bother at all
+    _matrix[0][0]   = _reducedMatrix[0][0];
+    _matrix[3][3]   = _reducedMatrix[0][0];
+    _matrix[6][6]   = _reducedMatrix[0][0];
+    _matrix[9][9]   = _reducedMatrix[0][0];
+
+    _matrix[0][1]   = _reducedMatrix[0][1];
+    _matrix[3][4]   = _reducedMatrix[0][1];
+    _matrix[6][7]   = _reducedMatrix[0][1];
+    _matrix[9][10]  = _reducedMatrix[0][1];
+
+    _matrix[0][2]   = _reducedMatrix[0][2];
+    _matrix[3][5]   = _reducedMatrix[0][2];
+    _matrix[6][8]   = _reducedMatrix[0][2];
+    _matrix[9][11]  = _reducedMatrix[0][2];
+
+    _matrix[1][0]   = _reducedMatrix[1][0];
+    _matrix[4][3]   = _reducedMatrix[1][0];
+    _matrix[7][6]   = _reducedMatrix[1][0];
+    _matrix[10][9]  = _reducedMatrix[1][0];
+
+    _matrix[1][1]   = _reducedMatrix[1][1];
+    _matrix[4][4]   = _reducedMatrix[1][1];
+    _matrix[7][7]   = _reducedMatrix[1][1];
+    _matrix[10][10] = _reducedMatrix[1][1];
+
+    _matrix[1][2]   = _reducedMatrix[1][2];
+    _matrix[4][5]   = _reducedMatrix[1][2];
+    _matrix[7][8]   = _reducedMatrix[1][2];
+    _matrix[10][11] = _reducedMatrix[1][2];
+
+    _matrix[2][0]   = _reducedMatrix[2][0];
+    _matrix[5][3]   = _reducedMatrix[2][0];
+    _matrix[8][6]   = _reducedMatrix[2][0];
+    _matrix[11][9]  = _reducedMatrix[2][0];
+
+    _matrix[2][1]   = _reducedMatrix[2][1];
+    _matrix[5][4]   = _reducedMatrix[2][1];
+    _matrix[8][7]   = _reducedMatrix[2][1];
+    _matrix[11][10] = _reducedMatrix[2][1];
+
+    _matrix[2][2]   = _reducedMatrix[2][2];
+    _matrix[5][5]   = _reducedMatrix[2][2];
+    _matrix[8][8]   = _reducedMatrix[2][2];
+    _matrix[11][11] = _reducedMatrix[2][2];
 }
 
 //--------------------------------------------------------------------------------
