@@ -33,8 +33,8 @@ void _setBarPropsLowLevel(Bar* _bar, Node _n1, Node _n2, Point _auxvec,
 
 // --------------------------------------------------------------------------------
 
-void _setBarPropsHighLevel(Bar* _bar, Node _n1, Node _n2, Point _auxvec,
-                           Material* _material, Section* _section)
+void setBarProps(Bar* _bar, Node _n1, Node _n2, Point _auxvec,
+                 Material* _material, Section* _section)
 {
     _setBarPropsLowLevel(_bar, _n1, _n2, _auxvec,
                          _material->e, _material->g,
@@ -215,12 +215,20 @@ void _fillGlobalStiffnessMatrix(double _matrix[12][12],
 
 // --------------------------------------------------------------------------------
 
-void _fillStiffnessMatrix(StiffnessMatrix* _stiffnessMatrix, Bar* _associatedBar)
+void setStiffnessMatrix(StiffnessMatrix* _sMatrix, Bar* _associatedBar)
 {
-    _fillMatrixDefaultValue(_stiffnessMatrix->local, 1.0);
-    _fillMatrixDefaultValue(_stiffnessMatrix->rotation, 3.0);
-    _fillMatrixDefaultValue(_stiffnessMatrix->transposeRotation, 4.0);
-    _fillMatrixDefaultValue(_stiffnessMatrix->global, 5.0);
+    _fillMatrixDefaultValue(_sMatrix->local, 1.0);
+    _fillMatrixDefaultValue(_sMatrix->rotation, 3.0);
+    _fillMatrixDefaultValue(_sMatrix->transposeRotation, 4.0);
+    _fillMatrixDefaultValue(_sMatrix->global, 5.0);
+
+    _fillLocalStiffnessMatrix(_sMatrix->local, _associatedBar);
+    _fillReducedRotationMatrix(_sMatrix->reducedRotation, _associatedBar);
+    _fillRotationMatrix(_sMatrix->rotation, _sMatrix->reducedRotation);
+    _fillTransposeRotationMatrix(_sMatrix->transposeRotation, _sMatrix->rotation);
+    _fillGlobalStiffnessMatrix(_sMatrix->global,
+                               _sMatrix->transposeRotation,
+                               _sMatrix->local);
 }
 
 // --------------------------------------------------------------------------------

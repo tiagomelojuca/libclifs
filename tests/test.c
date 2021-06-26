@@ -4,7 +4,6 @@
 // cmd /c "gcc tests/test.c src/libclifs.c -o build/a.exe && .\build\a"
 
 void printMatrix(double _matrix[12][12]) {
-    printf("\n");
     for(int i = 0; i < 12; i++) {
         for(int j = 0; j < 12; j++) {
             printf("%f    ", _matrix[i][j]);
@@ -41,7 +40,12 @@ int main()
     v1.z = 0.707;
 
     Bar b1;
-    _setBarPropsHighLevel(&b1, n1, n2, v1, &concrete, &rectangle);
+    setBarProps(&b1, n1, n2, v1, &concrete, &rectangle);
+
+    StiffnessMatrix m1;
+    setStiffnessMatrix(&m1, &b1);
+
+    printMatrix(m1.global);
 
     return 0;
 }
