@@ -218,7 +218,6 @@ void _fillGlobalStiffnessMatrix(double _matrix[12][12],
 void _fillStiffnessMatrix(StiffnessMatrix* _stiffnessMatrix, Bar* _associatedBar)
 {
     _fillMatrixDefaultValue(_stiffnessMatrix->local, 1.0);
-    _fillMatrixDefaultValue(_stiffnessMatrix->reducedRotation, 2.0);
     _fillMatrixDefaultValue(_stiffnessMatrix->rotation, 3.0);
     _fillMatrixDefaultValue(_stiffnessMatrix->transposeRotation, 4.0);
     _fillMatrixDefaultValue(_stiffnessMatrix->global, 5.0);
