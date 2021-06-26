@@ -4,6 +4,17 @@
 
 //--------------------------------------------------------------------------------
 
+double _calcDistBetweenPoints(Point _p1, Point _p2)
+{
+    double dx = _p1.x - _p2.x;
+    double dy = _p1.y - _p2.y;
+    double dz = _p1.z - _p2.z;
+    
+    return sqrt(pow(dx, 2) + pow(dy, 2) + pow(dz, 2));
+}
+
+//--------------------------------------------------------------------------------
+
 void _setBarPropsLowLevel(Bar* _bar, Node _n1, Node _n2, Point _auxvec,
                           double _e, double _g,
                           double _a, double _iy, double _iz, double _j)
@@ -11,6 +22,7 @@ void _setBarPropsLowLevel(Bar* _bar, Node _n1, Node _n2, Point _auxvec,
     _bar->node1 = _n1;
     _bar->node2 = _n2;
     _bar->auxvec = _auxvec;
+    _bar->l = _calcDistBetweenPoints(_n1.position, _n2.position);
     _bar->e = _e;
     _bar->g = _g;
     _bar->a = _a;
@@ -123,17 +135,6 @@ void _fillReducedRotationMatrix(double _matrix[3][3], Bar* _bar)
     _matrix[1][0] = _matrix[0][2] * _matrix[2][1] - _matrix[0][1] * _matrix[2][2];
     _matrix[1][1] = _matrix[0][0] * _matrix[2][2] - _matrix[0][2] * _matrix[2][0];
     _matrix[1][2] = _matrix[0][1] * _matrix[2][0] - _matrix[0][0] * _matrix[2][1];
-}
-
-//--------------------------------------------------------------------------------
-
-double _calcDistBetweenPoints(Point _p1, Point _p2)
-{
-    double dx = _p1.x - _p2.x;
-    double dy = _p1.y - _p2.y;
-    double dz = _p1.z - _p2.z;
-    
-    return sqrt(pow(dx, 2) + pow(dy, 2) + pow(dz, 2));
 }
 
 //--------------------------------------------------------------------------------

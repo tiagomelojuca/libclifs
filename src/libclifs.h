@@ -100,14 +100,14 @@ typedef struct section {
 
 // --------------------------------------------------------------------------------
 
+double _calcDistBetweenPoints(Point _p1, Point _p2);
+
 void _setBarPropsLowLevel(Bar* _bar, Node _n1, Node _n2, Point _auxvec,
                           double _e, double _g,
                           double _a, double _iy, double _iz, double _j);
 
 void _setBarPropsHighLevel(Bar* _bar, Node _n1, Node _n2, Point _auxvec,
                            Material* _material, Section* _section);
-
-double _calcDistBetweenPoints(Point _p1, Point _p2);
 
 void _fillNullMatrix(double _matrix[12][12]);
 void _fillLocalStiffnessMatrix(double _matrix[12][12], Bar* _bar);
