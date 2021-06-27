@@ -58,12 +58,12 @@ int main()
     printf("Number of Constraints: %i\n", g.numEqConstraint);
 
     mountGlobalSystem(&g);
-    printMatrix(g.mtxStiffness, g.numEquations, g.numEquations); printf("\n");
-    printMatrix(g.mtxNodalLoads, g.numEquations, 1); printf("\n");
-    printMatrix(g.mtxDisplacements, g.numEquations, 1); printf("\n");
+    // printMatrix(g.mtxStiffness, g.numEquations, g.numEquations); printf("\n");
+    // printMatrix(g.mtxNodalLoads, g.numEquations, 1); printf("\n");
+    // printMatrix(g.mtxDisplacements, g.numEquations, 1); printf("\n");
     printMatrix(g.mtxConstraints, DOG, g.nodeArray.used); printf("\n");
     printMatrix(g.mtxFreedoms, DOG, g.nodeArray.used); printf("\n");
-    printMatrix(g.mtxSpreading, g.framebarsArray.used, SM); printf("\n");
+    // printMatrix(g.mtxSpreading, g.framebarsArray.used, SM); printf("\n");
     
     freeGlobalSystem(&g);
     return 0;
