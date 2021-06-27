@@ -1,5 +1,15 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "../src/libclifs.h"
+
+void printMatrix(double** matrix, int nRows, int nColumns)
+{
+    for(int i = 0; i < nRows; i++) {
+        for(int j = 0; j < nColumns; j++) {
+            printf("%.1f  ", matrix[i][j]);
+        } printf("\n");
+    }
+}
 
 int main()
 {
@@ -47,6 +57,13 @@ int main()
     printf("Number of Freedoms: %i\n", g.numEqFreedoms);
     printf("Number of Constraints: %i\n", g.numEqConstraint);
 
+    mountGlobalSystem(&g);
+    printMatrix(g.mtxStiffness, g.numEquations, g.numEquations); printf("\n");
+    printMatrix(g.mtxNodalLoads, g.numEquations, 1); printf("\n");
+    printMatrix(g.mtxDisplacements, g.numEquations, 1); printf("\n");
+    printMatrix(g.mtxFreedoms, DOG, g.nodeArray.used); printf("\n");
+    printMatrix(g.mtxSpreading, g.framebarsArray.used, SM); printf("\n");
+    
     freeGlobalSystem(&g);
     return 0;
 }

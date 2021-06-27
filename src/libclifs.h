@@ -137,6 +137,11 @@ typedef struct globalSystem {
     int numEquations;
     int numEqFreedoms;
     int numEqConstraint;
+    double** mtxStiffness;
+    double** mtxNodalLoads;
+    double** mtxDisplacements;
+    double** mtxFreedoms;
+    double** mtxSpreading;
 } GlobalSystem;
 
 // --------------------------------------------------------------------------------
@@ -199,6 +204,19 @@ void freeFrameBarArray(FrameBarArray *_arr);
 void initGlobalSystem(GlobalSystem* _gSys);
 void insertNodeGlobalSystem(GlobalSystem* _gSys, Node _node);
 void insertFrameBarGlobalSystem(GlobalSystem* _gSys, FrameBar _bar);
+void _fillDynamicMatrix(double** _matrix, int _nR, int _nC, double _initialValue);
+void _initStiffnessMatrix(GlobalSystem* _gSys, double initialValue);
+void _freeStiffnessMatrix(GlobalSystem* _gSys);
+void _initNodalLoadVector(GlobalSystem* _gSys, double initialValue);
+void _freeNodalLoadVector(GlobalSystem* _gSys);
+void _initDisplacementsMatrix(GlobalSystem* _gSys, double initialValue);
+void _freeDisplacementsMatrix(GlobalSystem* _gSys);
+void _initFreedomsMatrix(GlobalSystem* _gSys, double initialValue);
+void _freeFreedomsMatrix(GlobalSystem* _gSys);
+void _initSpreadingMatrix(GlobalSystem* _gSys, double initialValue);
+void _freeSpreadingMatrix(GlobalSystem* _gSys);
+void _freeAllGlobalMatrix(GlobalSystem* _gSys);
+void mountGlobalSystem(GlobalSystem* _gSys);
 void freeGlobalSystem(GlobalSystem* _gSys);
 
 // MAKE THIS HEADER FILE COMPATIBLE WITH C++ CODE TOO (END) -----------------------
