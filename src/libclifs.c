@@ -601,12 +601,19 @@ void _initConstraintsMatrix(GlobalSystem* _gSys, double initialValue)
 void _mountConstraintsMatrix(GlobalSystem* _gSys)
 {
     for(int i = 0; i < _gSys->nodeArray.used; i++) {
-        if(!_gSys->nodeArray.nodes[i].translation.x) _gSys->mtxFreedoms[0][i] = 1;
-        if(!_gSys->nodeArray.nodes[i].translation.y) _gSys->mtxFreedoms[1][i] = 1;
-        if(!_gSys->nodeArray.nodes[i].translation.z) _gSys->mtxFreedoms[2][i] = 1;
-        if(!_gSys->nodeArray.nodes[i].rotation.x) _gSys->mtxFreedoms[3][i] = 1;
-        if(!_gSys->nodeArray.nodes[i].rotation.y) _gSys->mtxFreedoms[4][i] = 1;
-        if(!_gSys->nodeArray.nodes[i].rotation.z) _gSys->mtxFreedoms[5][i] = 1;
+        const bool isTranslationFixedX = !_gSys->nodeArray.nodes[i].translation.x;
+        const bool isTranslationFixedY = !_gSys->nodeArray.nodes[i].translation.y;
+        const bool isTranslationFixedZ = !_gSys->nodeArray.nodes[i].translation.z;
+        const bool isRotationFixedX = !_gSys->nodeArray.nodes[i].rotation.x;
+        const bool isRotationFixedY = !_gSys->nodeArray.nodes[i].rotation.y;
+        const bool isRotationFixedZ = !_gSys->nodeArray.nodes[i].rotation.z;
+        
+        if(isTranslationFixedX) _gSys->mtxConstraints[0][i] = 1;
+        if(isTranslationFixedY) _gSys->mtxConstraints[1][i] = 1;
+        if(isTranslationFixedZ) _gSys->mtxConstraints[2][i] = 1;
+        if(isRotationFixedX) _gSys->mtxConstraints[3][i] = 1;
+        if(isRotationFixedY) _gSys->mtxConstraints[4][i] = 1;
+        if(isRotationFixedZ) _gSys->mtxConstraints[5][i] = 1;
     }
 }
 
