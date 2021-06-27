@@ -112,14 +112,14 @@ Node createNode(Point _position,
 
 // --------------------------------------------------------------------------------
 
-void _setBarPropsLowLevel(Bar* _bar, Node _n1, Node _n2, Point _auxvec,
+void _setBarPropsLowLevel(Bar* _bar, Node* _n1, Node* _n2, Point _auxvec,
                           double _e, double _g,
                           double _a, double _iy, double _iz, double _j)
 {
     _bar->node1 = _n1;
     _bar->node2 = _n2;
     _bar->auxvec = _auxvec;
-    _bar->l = _calcDistBetweenPoints(_n1.position, _n2.position);
+    _bar->l = _calcDistBetweenPoints(_n1->position, _n2->position);
     _bar->e = _e;
     _bar->g = _g;
     _bar->a = _a;
@@ -130,7 +130,7 @@ void _setBarPropsLowLevel(Bar* _bar, Node _n1, Node _n2, Point _auxvec,
 
 // --------------------------------------------------------------------------------
 
-void setBarProps(Bar* _bar, Node _n1, Node _n2, Point _auxvec,
+void setBarProps(Bar* _bar, Node* _n1, Node* _n2, Point _auxvec,
                  Material* _material, Section* _section)
 {
     _setBarPropsLowLevel(_bar, _n1, _n2, _auxvec,
@@ -254,18 +254,18 @@ void _fillLocalStiffnessMatrix(double _matrix[SM][SM], Bar* _bar)
 void _fillReducedRotationMatrix(double _matrix[RM][RM], Bar* _bar)
 {
     // This is all civil engineering business logic, don't bother at all
-    _matrix[0][0] = (_bar->node2.position.x - _bar->node1.position.x) / _bar->l;
-    _matrix[0][1] = (_bar->node2.position.y - _bar->node1.position.y) / _bar->l;
-    _matrix[0][2] = (_bar->node2.position.z - _bar->node1.position.z) / _bar->l;
+    _matrix[0][0] = (_bar->node2->position.x - _bar->node1->position.x) / _bar->l;
+    _matrix[0][1] = (_bar->node2->position.y - _bar->node1->position.y) / _bar->l;
+    _matrix[0][2] = (_bar->node2->position.z - _bar->node1->position.z) / _bar->l;
 
-    double dx = _bar->auxvec.x - _bar->node1.position.x;
-    double dy = _bar->auxvec.y - _bar->node1.position.y;
-    double dz = _bar->auxvec.z - _bar->node1.position.z;
+    double dx = _bar->auxvec.x - _bar->node1->position.x;
+    double dy = _bar->auxvec.y - _bar->node1->position.y;
+    double dz = _bar->auxvec.z - _bar->node1->position.z;
     double auxvecLength = sqrt(pow(dx, 2) + pow(dy, 2) + pow(dz, 2));
 
-    double cosAlfa = (_bar->auxvec.x - _bar->node1.position.x) / auxvecLength;
-    double cosBeta = (_bar->auxvec.y - _bar->node1.position.y) / auxvecLength;
-    double cosGama = (_bar->auxvec.z - _bar->node1.position.z) / auxvecLength;
+    double cosAlfa = (_bar->auxvec.x - _bar->node1->position.x) / auxvecLength;
+    double cosBeta = (_bar->auxvec.y - _bar->node1->position.y) / auxvecLength;
+    double cosGama = (_bar->auxvec.z - _bar->node1->position.z) / auxvecLength;
 
     double c = sqrt(pow((_matrix[0][1] * cosGama - _matrix[0][2] * cosBeta), 2) +
                     pow((_matrix[0][2] * cosAlfa - _matrix[0][0] * cosGama), 2) +
@@ -376,7 +376,7 @@ void setStiffnessMatrix(StiffnessMatrix* _sMatrix, Bar* _associatedBar)
 
 // --------------------------------------------------------------------------------
 
-void setFrameBarProps(FrameBar* _frameBar, Node _n1, Node _n2, Point _auxvec,
+void setFrameBarProps(FrameBar* _frameBar, Node* _n1, Node* _n2, Point _auxvec,
                       Material* _material, Section* _section)
 {
     _frameBar->material = *_material;
@@ -391,7 +391,7 @@ void setFrameBarProps(FrameBar* _frameBar, Node _n1, Node _n2, Point _auxvec,
 
 // --------------------------------------------------------------------------------
 
-FrameBar createFrameBar(Node _n1, Node _n2, Point _auxvec,
+FrameBar createFrameBar(Node* _n1, Node* _n2, Point _auxvec,
                         Material* _material, Section* _section)
 {
     FrameBar fb;
@@ -607,7 +607,7 @@ void _mountConstraintsMatrix(GlobalSystem* _gSys)
         const bool isRotationFixedX = !_gSys->nodeArray.nodes[i].rotation.x;
         const bool isRotationFixedY = !_gSys->nodeArray.nodes[i].rotation.y;
         const bool isRotationFixedZ = !_gSys->nodeArray.nodes[i].rotation.z;
-        
+
         if(isTranslationFixedX) _gSys->mtxConstraints[0][i] = 1;
         if(isTranslationFixedY) _gSys->mtxConstraints[1][i] = 1;
         if(isTranslationFixedZ) _gSys->mtxConstraints[2][i] = 1;
@@ -691,6 +691,28 @@ void _initSpreadingMatrix(GlobalSystem* _gSys, double initialValue)
 
 // --------------------------------------------------------------------------------
 
+void _mountSpreadingMatrix(GlobalSystem* _gSys)
+{
+    for(int i = 0; i < _gSys->framebarsArray.used; i++) {
+        for(int j = 0; j < DOG; j++) {
+            Node* pNode = _gSys->framebarsArray.framebars[i].bar.node1;
+            int nIndex = pNode - _gSys->nodeArray.nodes;
+
+            _gSys->mtxSpreading[i][j] = _gSys->mtxFreedoms[j][nIndex];
+        }
+
+        for(int j = DOG; j < SM; j++) {
+            Node* pNode = _gSys->framebarsArray.framebars[i].bar.node2;
+            int nIndex = pNode - _gSys->nodeArray.nodes;
+            
+            int adjustedIndex = j - DOG;
+            _gSys->mtxSpreading[i][j] = _gSys->mtxFreedoms[adjustedIndex][nIndex];
+        }
+    }
+}
+
+// --------------------------------------------------------------------------------
+
 void _freeSpreadingMatrix(GlobalSystem* _gSys)
 {
     for(int i = 0; i < _gSys->framebarsArray.used; i++) {
@@ -729,6 +751,7 @@ void mountGlobalSystem(GlobalSystem* _gSys)
     // WIP: Actually mount all matrix involved
     _mountConstraintsMatrix(_gSys);
     _mountFreedomsMatrix(_gSys);
+    _mountSpreadingMatrix(_gSys);
 }
 
 // --------------------------------------------------------------------------------

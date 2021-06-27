@@ -79,8 +79,8 @@ typedef struct node {
 } Node;
 
 typedef struct bar {
-    Node node1;
-    Node node2;
+    Node* node1;
+    Node* node2;
     Point auxvec;
     double l;
     double e;
@@ -166,10 +166,10 @@ Node createNode(Point _position,
                 DegreesOfFreedom _translation, DegreesOfFreedom _rotation,
                 NodalLoad _load);
 
-void _setBarPropsLowLevel(Bar* _bar, Node _n1, Node _n2, Point _auxvec,
+void _setBarPropsLowLevel(Bar* _bar, Node* _n1, Node* _n2, Point _auxvec,
                           double _e, double _g,
                           double _a, double _iy, double _iz, double _j);
-void setBarProps(Bar* _bar, Node _n1, Node _n2, Point _auxvec,
+void setBarProps(Bar* _bar, Node* _n1, Node* _n2, Point _auxvec,
                  Material* _material, Section* _section);
 
 void setMaterialProps(Material* _material, double _e, double _g);
@@ -189,9 +189,9 @@ void _fillGlobalStiffnessMatrix(double _matrix[SM][SM],
                                 double _tRotation[SM][SM], double _local[SM][SM]);
 void setStiffnessMatrix(StiffnessMatrix* _sMatrix, Bar* _associatedBar);
 
-void setFrameBarProps(FrameBar* _frameBar, Node _n1, Node _n2, Point _auxvec,
+void setFrameBarProps(FrameBar* _frameBar, Node* _n1, Node* _n2, Point _auxvec,
                       Material* _material, Section* _section);
-FrameBar createFrameBar(Node _n1, Node _n2, Point _auxvec,
+FrameBar createFrameBar(Node* _n1, Node* _n2, Point _auxvec,
                         Material* _material, Section* _section);
 
 void initNodeArray(NodeArray* _arr, size_t _initSize);
@@ -219,6 +219,7 @@ void _initFreedomsMatrix(GlobalSystem* _gSys, double initialValue);
 void _mountFreedomsMatrix(GlobalSystem* _gSys);
 void _freeFreedomsMatrix(GlobalSystem* _gSys);
 void _initSpreadingMatrix(GlobalSystem* _gSys, double initialValue);
+void _mountSpreadingMatrix(GlobalSystem* _gSys);
 void _freeSpreadingMatrix(GlobalSystem* _gSys);
 void _freeAllGlobalMatrix(GlobalSystem* _gSys);
 void mountGlobalSystem(GlobalSystem* _gSys);
