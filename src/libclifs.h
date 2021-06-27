@@ -116,25 +116,20 @@ typedef struct frameBar {
 // --------------------------------------------------------------------------------
 
 void setPointCoords(Point* _point, double _x, double _y, double _z);
-
 Point createPoint(double _x, double _y, double _z);
-
 double _calcDistBetweenPoints(Point _p1, Point _p2);
 
 void setDegreesOfFreedomProps(DegreesOfFreedom* _dof, bool _x, bool _y, bool _z);
-
 DegreesOfFreedom createDegreesOfFreedom(bool _x, bool _y, bool _z);
 
 void setNodalLoadValues(NodalLoad* _load, double _fx, double _fy, double _fz,
                         double _mx, double _my, double _mz);
-
 NodalLoad createNodalLoad(double _fx, double _fy, double _fz,
                           double _mx, double _my, double _mz);
 
 void setNodeProps(Node* _node, Point _position,
                   DegreesOfFreedom _translation, DegreesOfFreedom _rotation,
                   NodalLoad _load);
-
 Node createNode(Point _position,
                 DegreesOfFreedom _translation, DegreesOfFreedom _rotation,
                 NodalLoad _load);
@@ -142,17 +137,14 @@ Node createNode(Point _position,
 void _setBarPropsLowLevel(Bar* _bar, Node _n1, Node _n2, Point _auxvec,
                           double _e, double _g,
                           double _a, double _iy, double _iz, double _j);
-
 void setBarProps(Bar* _bar, Node _n1, Node _n2, Point _auxvec,
                  Material* _material, Section* _section);
 
 void setMaterialProps(Material* _material, double _e, double _g);
-
 Material createMaterial(double _e, double _g);
 
 void setSectionProps(Section* _section, double _a,
                      double _iy, double _iz, double _j);
-
 Section createSection(double _a, double _iy, double _iz, double _j);
 
 void _fillMatrixDefaultValue(double _matrix[12][12], double _defaultValue);
@@ -162,12 +154,10 @@ void _fillRotationMatrix(double _matrix[12][12], double _reducedMatrix[3][3]);
 void _fillTransposeRotationMatrix(double _matrix[12][12], double _other[12][12]);
 void _fillGlobalStiffnessMatrix(double _matrix[12][12],
                                 double _tRotation[12][12], double _local[12][12]);
-
 void setStiffnessMatrix(StiffnessMatrix* _sMatrix, Bar* _associatedBar);
 
 void setFrameBarProps(FrameBar* _frameBar, Node _n1, Node _n2, Point _auxvec,
                       Material* _material, Section* _section);
-
 FrameBar createFrameBar(Node _n1, Node _n2, Point _auxvec,
                         Material* _material, Section* _section);
 
