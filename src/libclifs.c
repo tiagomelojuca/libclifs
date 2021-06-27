@@ -584,6 +584,32 @@ void _freeDisplacementsMatrix(GlobalSystem* _gSys)
 
 // --------------------------------------------------------------------------------
 
+void _initConstraintsMatrix(GlobalSystem* _gSys, double initialValue)
+{
+    const int nNodes = _gSys->nodeArray.used;
+
+    _gSys->mtxConstraints = malloc(DOG * sizeof(double*));
+    for(int i = 0; i < DOG; i++) {
+        _gSys->mtxConstraints[i] = malloc(nNodes * sizeof(double));
+    }
+    
+    _fillDynamicMatrix(_gSys->mtxConstraints, DOG, nNodes, initialValue);
+}
+
+// --------------------------------------------------------------------------------
+
+void _freeConstraintsMatrix(GlobalSystem* _gSys)
+{
+    for(int i = 0; i < DOG; i++) {
+        double* currentPtr = _gSys->mtxConstraints[i];
+        free(currentPtr);
+    } free(_gSys->mtxConstraints);
+
+    _gSys->mtxConstraints = NULL;
+}
+
+// --------------------------------------------------------------------------------
+
 void _initFreedomsMatrix(GlobalSystem* _gSys, double initialValue)
 {
     const int nNodes = _gSys->nodeArray.used;
@@ -600,7 +626,7 @@ void _initFreedomsMatrix(GlobalSystem* _gSys, double initialValue)
 
 void _freeFreedomsMatrix(GlobalSystem* _gSys)
 {
-    for(int i = 0; i < _gSys->numEquations; i++) {
+    for(int i = 0; i < DOG; i++) {
         double* currentPtr = _gSys->mtxFreedoms[i];
         free(currentPtr);
     } free(_gSys->mtxFreedoms);
@@ -626,7 +652,7 @@ void _initSpreadingMatrix(GlobalSystem* _gSys, double initialValue)
 
 void _freeSpreadingMatrix(GlobalSystem* _gSys)
 {
-    for(int i = 0; i < _gSys->numEquations; i++) {
+    for(int i = 0; i < _gSys->framebarsArray.used; i++) {
         double* currentPtr = _gSys->mtxSpreading[i];
         free(currentPtr);
     } free(_gSys->mtxSpreading);
@@ -641,6 +667,7 @@ void _freeAllGlobalMatrix(GlobalSystem* _gSys)
     _freeStiffnessMatrix(_gSys);
     _freeNodalLoadVector(_gSys);
     _freeDisplacementsMatrix(_gSys);
+    _freeConstraintsMatrix(_gSys);
     _freeFreedomsMatrix(_gSys);
     _freeSpreadingMatrix(_gSys);
 }
@@ -654,6 +681,7 @@ void mountGlobalSystem(GlobalSystem* _gSys)
     _initStiffnessMatrix(_gSys, defaultValue);
     _initNodalLoadVector(_gSys, defaultValue);
     _initDisplacementsMatrix(_gSys, defaultValue);
+    _initConstraintsMatrix(_gSys, defaultValue);
     _initFreedomsMatrix(_gSys, defaultValue);
     _initSpreadingMatrix(_gSys, defaultValue);
 

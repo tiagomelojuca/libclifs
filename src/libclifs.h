@@ -140,6 +140,7 @@ typedef struct globalSystem {
     double** mtxStiffness;
     double** mtxNodalLoads;
     double** mtxDisplacements;
+    double** mtxConstraints;
     double** mtxFreedoms;
     double** mtxSpreading;
 } GlobalSystem;
@@ -211,6 +212,8 @@ void _initNodalLoadVector(GlobalSystem* _gSys, double initialValue);
 void _freeNodalLoadVector(GlobalSystem* _gSys);
 void _initDisplacementsMatrix(GlobalSystem* _gSys, double initialValue);
 void _freeDisplacementsMatrix(GlobalSystem* _gSys);
+void _initConstraintsMatrix(GlobalSystem* _gSys, double initialValue);
+void _freeConstraintsMatrix(GlobalSystem* _gSys);
 void _initFreedomsMatrix(GlobalSystem* _gSys, double initialValue);
 void _freeFreedomsMatrix(GlobalSystem* _gSys);
 void _initSpreadingMatrix(GlobalSystem* _gSys, double initialValue);
