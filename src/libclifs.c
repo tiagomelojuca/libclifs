@@ -720,6 +720,8 @@ void mountGlobalSystem(GlobalSystem* _gSys)
     _initSpreadingMatrix(_gSys, defaultValue);
 
     // WIP: Actually mount all matrix involved
+    _mountConstraintsMatrix(_gSys);
+    _mountFreedomsMatrix(_gSys);
 }
 
 // --------------------------------------------------------------------------------
