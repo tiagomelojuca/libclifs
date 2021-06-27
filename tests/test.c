@@ -12,38 +12,22 @@ void printMatrix(double _matrix[12][12]) {
 
 int main()
 {
-    Material concrete;
-    setMaterialProps(&concrete, 100000, 38462);
+    Material concrete = createMaterial(100000.0, 38462.0);
+    Section rectangle = createSection(0.01, 0.00001, 0.00001, 0.00001);
 
-    Section rectangle;
-    setSectionProps(&rectangle, 0.01, 0.00001, 0.00001, 0.00001);
+    Point p1 = createPoint(0.0,   0.0,   0.0);
+    Point p2 = createPoint(0.0,   0.0,  2.44);
+    Point v1 = createPoint(0.0, 0.707, 0.707);
 
-    Point p1;
-    setPointCoords(&p1, 0.0, 0.0, 0.0);
+    DegreesOfFreedom allFixed = createDegreesOfFreedom(false, false, false);
+    DegreesOfFreedom allFree = createDegreesOfFreedom(true, true, true);;
 
-    Point p2;
-    setPointCoords(&p2, 0.0, 0.0, 2.44);
+    NodalLoad load = createNodalLoad(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
 
-    Point v1;
-    setPointCoords(&v1, 0.0, 0.707, 0.707);
+    Node n1 = createNode(p1, allFixed, allFixed, load);
+    Node n2 = createNode(p2, allFree, allFree, load);
 
-    DegreesOfFreedom allFixed;
-    setDegreesOfFreedomProps(&allFixed, false, false, false);
-
-    DegreesOfFreedom allFree;
-    setDegreesOfFreedomProps(&allFixed, true, true, true);
-
-    NodalLoad load;
-    setNodalLoadValues(&load, 0, 0, 0, 0, 0, 0);
-
-    Node n1;
-    setNodeProps(&n1, p1, allFixed, allFixed, load);
-
-    Node n2;
-    setNodeProps(&n2, p2, allFree, allFree, load);
-
-    FrameBar b1;
-    setFrameBarProps(&b1, n1, n2, v1, &concrete, &rectangle);
+    FrameBar b1 = createFrameBar(n1, n2, v1, &concrete, &rectangle);
 
     printMatrix(b1.stiffnessMatrix.global);
 

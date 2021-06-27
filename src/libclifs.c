@@ -13,6 +13,16 @@ void setPointCoords(Point* _point, double _x, double _y, double _z)
 
 // --------------------------------------------------------------------------------
 
+Point createPoint(double _x, double _y, double _z)
+{
+    Point p;
+    setPointCoords(&p, _x, _y, _z);
+
+    return p;
+}
+
+// --------------------------------------------------------------------------------
+
 double _calcDistBetweenPoints(Point _p1, Point _p2)
 {
     double dx = _p1.x - _p2.x;
@@ -33,6 +43,16 @@ void setDegreesOfFreedomProps(DegreesOfFreedom* _dof, bool _x, bool _y, bool _z)
 
 // --------------------------------------------------------------------------------
 
+DegreesOfFreedom createDegreesOfFreedom(bool _x, bool _y, bool _z)
+{
+    DegreesOfFreedom dof;
+    setDegreesOfFreedomProps(&dof, _x, _y, _z);
+
+    return dof;
+}
+
+// --------------------------------------------------------------------------------
+
 void setNodalLoadValues(NodalLoad* _load, double _fx, double _fy, double _fz,
                         double _mx, double _my, double _mz)
 {
@@ -46,6 +66,17 @@ void setNodalLoadValues(NodalLoad* _load, double _fx, double _fy, double _fz,
 
 // --------------------------------------------------------------------------------
 
+NodalLoad createNodalLoad(double _fx, double _fy, double _fz,
+                          double _mx, double _my, double _mz)
+{
+    NodalLoad l;
+    setNodalLoadValues(&l, _fx, _fy, _fz, _mx, _my, _mz);
+
+    return l;
+}
+
+// --------------------------------------------------------------------------------
+
 void setNodeProps(Node* _node, Point _position,
                   DegreesOfFreedom _translation, DegreesOfFreedom _rotation,
                   NodalLoad _load)
@@ -54,6 +85,18 @@ void setNodeProps(Node* _node, Point _position,
     _node->translation = _translation;
     _node->rotation = _rotation;
     _node->load = _load;
+}
+
+// --------------------------------------------------------------------------------
+
+Node createNode(Point _position,
+                DegreesOfFreedom _translation, DegreesOfFreedom _rotation,
+                NodalLoad _load)
+{
+    Node n;
+    setNodeProps(&n, _position, _translation, _rotation, _load);
+
+    return n;
 }
 
 // --------------------------------------------------------------------------------
@@ -94,6 +137,16 @@ void setMaterialProps(Material* _material, double _e, double _g)
 
 // --------------------------------------------------------------------------------
 
+Material createMaterial(double _e, double _g)
+{
+    Material m;
+    setMaterialProps(&m, _e, _g);
+
+    return m;
+}
+
+// --------------------------------------------------------------------------------
+
 void setSectionProps(Section* _section, double _a,
                      double _iy, double _iz, double _j)
 {
@@ -101,6 +154,16 @@ void setSectionProps(Section* _section, double _a,
     _section->iy = _iy;
     _section->iz = _iz;
     _section->j = _j;
+}
+
+// --------------------------------------------------------------------------------
+
+Section createSection(double _a, double _iy, double _iz, double _j)
+{
+    Section s;
+    setSectionProps(&s, _a, _iy, _iz, _j);
+
+    return s;
 }
 
 // --------------------------------------------------------------------------------
@@ -303,6 +366,17 @@ void setFrameBarProps(FrameBar* _frameBar, Node _n1, Node _n2, Point _auxvec,
 
     StiffnessMatrix* pStiffnessMatrix = &(_frameBar->stiffnessMatrix);
     setStiffnessMatrix(pStiffnessMatrix, pBar);
+}
+
+// --------------------------------------------------------------------------------
+
+FrameBar createFrameBar(Node _n1, Node _n2, Point _auxvec,
+                        Material* _material, Section* _section)
+{
+    FrameBar fb;
+    setFrameBarProps(&fb, _n1, _n2, _auxvec, _material, _section);
+
+    return fb;
 }
 
 // --------------------------------------------------------------------------------
