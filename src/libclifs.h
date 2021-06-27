@@ -28,6 +28,8 @@ extern "C" {
 
 // HEADER CONTENT -----------------------------------------------------------------
 
+#include <stddef.h>
+
 // TYPES DECLARATION
 // REMINDER TO MYSELF (SOURCE-> www.tutorialspoint.com/cprogramming/c_typedef.htm)
 // By convention, uppercase letters are used for these definitions to
@@ -113,6 +115,12 @@ typedef struct frameBar {
     StiffnessMatrix stiffnessMatrix;
 } FrameBar;
 
+typedef struct nodeArray {
+    Node* nodes;
+    size_t used;
+    size_t size;
+} NodeArray;
+
 // --------------------------------------------------------------------------------
 
 void setPointCoords(Point* _point, double _x, double _y, double _z);
@@ -160,6 +168,10 @@ void setFrameBarProps(FrameBar* _frameBar, Node _n1, Node _n2, Point _auxvec,
                       Material* _material, Section* _section);
 FrameBar createFrameBar(Node _n1, Node _n2, Point _auxvec,
                         Material* _material, Section* _section);
+
+void initNodeArray(NodeArray* _arr, size_t _initSize);
+void insertNodeArray(NodeArray* _arr, Node _node);
+void freeNodeArray(NodeArray *_arr);
 
 // MAKE THIS HEADER FILE COMPATIBLE WITH C++ CODE TOO (END) -----------------------
 #ifdef __cplusplus

@@ -1,2 +1,10 @@
 @echo off
-cmd /c "gcc tests/test.c src/libclifs.c -o build/a.exe && .\build\a"
+echo.
+
+echo -- Testing elements.c --
+cmd /c "gcc src/libclifs.c tests/elements.c -o build/a.exe && .\build\a"
+echo.
+
+echo -- Testing datastructs.c --
+cmd /c "gcc src/libclifs.c tests/datastructs.c -o build/a.exe && .\build\a"
+echo.

@@ -1,5 +1,6 @@
 #include "libclifs.h"
 
+#include <stdlib.h>
 #include <math.h>
 
 // --------------------------------------------------------------------------------
@@ -377,6 +378,35 @@ FrameBar createFrameBar(Node _n1, Node _n2, Point _auxvec,
     setFrameBarProps(&fb, _n1, _n2, _auxvec, _material, _section);
 
     return fb;
+}
+
+// --------------------------------------------------------------------------------
+
+void initNodeArray(NodeArray* _arr, size_t _initSize)
+{
+    _arr->nodes = malloc(_initSize * sizeof(Node));
+    _arr->used = 0;
+    _arr->size = _initSize;
+}
+
+// --------------------------------------------------------------------------------
+
+void insertNodeArray(NodeArray* _arr, Node _node)
+{
+    if(_arr->used == _arr->size) {
+        _arr->size *= 2;
+        _arr->nodes = realloc(_arr->nodes, _arr->size * sizeof(Node));
+    }
+    _arr->nodes[_arr->used++] = _node;
+}
+
+// --------------------------------------------------------------------------------
+
+void freeNodeArray(NodeArray *_arr)
+{
+    free(_arr->nodes);
+    _arr->nodes = NULL;
+    _arr->used = _arr->size = 0;
 }
 
 // --------------------------------------------------------------------------------
