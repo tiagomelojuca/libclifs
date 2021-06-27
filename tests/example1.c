@@ -41,10 +41,10 @@ int main()
     insertNodeGlobalSystem(&g, n5);
 
     Point auxvec = createPoint(0.0, 0.707, 0.707);
-    FrameBar b1 = createFrameBar(n1, n2, auxvec, &concrete, &rectangle);
-    FrameBar b2 = createFrameBar(n2, n3, auxvec, &concrete, &rectangle);
-    FrameBar b3 = createFrameBar(n3, n4, auxvec, &concrete, &rectangle);
-    FrameBar b4 = createFrameBar(n4, n5, auxvec, &concrete, &rectangle);
+    FrameBar b1 = createFrameBar(&g.nodeArray.nodes[0], &g.nodeArray.nodes[1], auxvec, &concrete, &rectangle);
+    FrameBar b2 = createFrameBar(&g.nodeArray.nodes[1], &g.nodeArray.nodes[2], auxvec, &concrete, &rectangle);
+    FrameBar b3 = createFrameBar(&g.nodeArray.nodes[2], &g.nodeArray.nodes[3], auxvec, &concrete, &rectangle);
+    FrameBar b4 = createFrameBar(&g.nodeArray.nodes[3], &g.nodeArray.nodes[4], auxvec, &concrete, &rectangle);
 
     insertFrameBarGlobalSystem(&g, b1);
     insertFrameBarGlobalSystem(&g, b2);
@@ -63,8 +63,9 @@ int main()
     // printMatrix(g.mtxDisplacements, g.numEquations, 1); printf("\n");
     printMatrix(g.mtxConstraints, DOG, g.nodeArray.used); printf("\n");
     printMatrix(g.mtxFreedoms, DOG, g.nodeArray.used); printf("\n");
-    // printMatrix(g.mtxSpreading, g.framebarsArray.used, SM); printf("\n");
-    
+    printMatrix(g.mtxSpreading, g.framebarsArray.used, SM); printf("\n");
+
+    printf("Done.\n");
     freeGlobalSystem(&g);
     return 0;
 }
