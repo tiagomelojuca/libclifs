@@ -764,6 +764,31 @@ void _freeSpreadingMatrix(GlobalSystem* _gSys)
 
 // --------------------------------------------------------------------------------
 
+void _initAllGlobalMatrix(GlobalSystem* _gSys)
+{
+    const double defaultValue = 0.0;
+
+    _initStiffnessMatrix(_gSys, defaultValue);
+    _initNodalLoadVector(_gSys, defaultValue);
+    _initDisplacementsMatrix(_gSys, defaultValue);
+    _initConstraintsMatrix(_gSys, defaultValue);
+    _initFreedomsMatrix(_gSys, defaultValue);
+    _initSpreadingMatrix(_gSys, defaultValue);
+}
+
+// --------------------------------------------------------------------------------
+
+void _mountAllGlobalMatrix(GlobalSystem* _gSys)
+{
+    _mountConstraintsMatrix(_gSys);
+    _mountFreedomsMatrix(_gSys);
+    _mountSpreadingMatrix(_gSys);
+    _mountStiffnessMatrix(_gSys);
+    _mountNodalLoadVector(_gSys);
+}
+
+// --------------------------------------------------------------------------------
+
 void _freeAllGlobalMatrix(GlobalSystem* _gSys)
 {
     _freeStiffnessMatrix(_gSys);
@@ -778,21 +803,8 @@ void _freeAllGlobalMatrix(GlobalSystem* _gSys)
 
 void mountGlobalSystem(GlobalSystem* _gSys)
 {
-    const double defaultValue = 0.0;
-
-    _initStiffnessMatrix(_gSys, defaultValue);
-    _initNodalLoadVector(_gSys, defaultValue);
-    _initDisplacementsMatrix(_gSys, defaultValue);
-    _initConstraintsMatrix(_gSys, defaultValue);
-    _initFreedomsMatrix(_gSys, defaultValue);
-    _initSpreadingMatrix(_gSys, defaultValue);
-
-    // WIP: Actually mount all matrix involved
-    _mountConstraintsMatrix(_gSys);
-    _mountFreedomsMatrix(_gSys);
-    _mountSpreadingMatrix(_gSys);
-    _mountStiffnessMatrix(_gSys);
-    _mountNodalLoadVector(_gSys);
+    _initAllGlobalMatrix(_gSys);
+    _mountAllGlobalMatrix(_gSys);
 }
 
 // --------------------------------------------------------------------------------

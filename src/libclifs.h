@@ -223,6 +223,8 @@ void _freeFreedomsMatrix(GlobalSystem* _gSys);
 void _initSpreadingMatrix(GlobalSystem* _gSys, double initialValue);
 void _mountSpreadingMatrix(GlobalSystem* _gSys);
 void _freeSpreadingMatrix(GlobalSystem* _gSys);
+void _initAllGlobalMatrix(GlobalSystem* _gSys);
+void _mountAllGlobalMatrix(GlobalSystem* _gSys);
 void _freeAllGlobalMatrix(GlobalSystem* _gSys);
 void mountGlobalSystem(GlobalSystem* _gSys);
 void freeGlobalSystem(GlobalSystem* _gSys);
