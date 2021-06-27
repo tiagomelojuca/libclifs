@@ -15,19 +15,19 @@ int main()
     Material concrete = createMaterial(100000.0, 38462.0);
     Section rectangle = createSection(0.01, 0.00001, 0.00001, 0.00001);
 
-    Point p1 = createPoint(0.0,   0.0,   0.0);
-    Point p2 = createPoint(0.0,   0.0,  2.44);
-    Point v1 = createPoint(0.0, 0.707, 0.707);
-
-    DegreesOfFreedom allFixed = createDegreesOfFreedom(false, false, false);
-    DegreesOfFreedom allFree = createDegreesOfFreedom(true, true, true);;
-
-    NodalLoad load = createNodalLoad(0.0, 0.0, 0.0, 0.0, 0.0, 0.0);
-
-    Node n1 = createNode(p1, allFixed, allFixed, load);
-    Node n2 = createNode(p2, allFree, allFree, load);
-
-    FrameBar b1 = createFrameBar(n1, n2, v1, &concrete, &rectangle);
+    FrameBar b1 = createFrameBar(
+        createNode(createPoint(0.0, 0.0, 0.0),
+                   createDegreesOfFreedom(false, false, false),
+                   createDegreesOfFreedom(false, false, false),
+                   createNodalLoad(0.0, 0.0, 0.0, 0.0, 0.0, 0.0)),
+        createNode(createPoint(0.0, 0.0, 2.44),
+                   createDegreesOfFreedom(true, true, true),
+                   createDegreesOfFreedom(true, true, true),
+                   createNodalLoad(0.0, 0.0, 0.0, 0.0, 0.0, 0.0)),
+        createPoint(0.0, 0.707, 0.707),
+        &concrete,
+        &rectangle
+    );
 
     printMatrix(b1.stiffnessMatrix.global);
 
