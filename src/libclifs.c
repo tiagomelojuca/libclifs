@@ -569,7 +569,7 @@ void _mountNodalLoadVector(GlobalSystem* _gSys)
     for(int i = 0; i < _gSys->nodeArray.used; i++) {
         int adjustedIndex = 0;
 
-        double currentNodeLoadVector[6] = {_gSys->nodeArray.nodes[i].load.fx,
+        double loadVectorCurrentNode[6] = {_gSys->nodeArray.nodes[i].load.fx,
                                            _gSys->nodeArray.nodes[i].load.fy,
                                            _gSys->nodeArray.nodes[i].load.fz,
                                            _gSys->nodeArray.nodes[i].load.mx,
@@ -578,7 +578,7 @@ void _mountNodalLoadVector(GlobalSystem* _gSys)
 
         for(int j = 0; j < DOG; j++) {
             adjustedIndex = _gSys->mtxFreedoms[j][i] - 1;
-            _gSys->mtxNodalLoads[adjustedIndex][0] += currentNodeLoadVector[j];
+            _gSys->mtxNodalLoads[adjustedIndex][0] += loadVectorCurrentNode[j];
         }
     }
 }
