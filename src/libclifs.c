@@ -40,6 +40,15 @@ void setDegreesOfFreedomProps(DegreesOfFreedom* _dof, bool _x, bool _y, bool _z)
     _dof->x = _x;
     _dof->y = _y;
     _dof->z = _z;
+
+    _dof->constraints = 0;
+
+    // Business Logic: note that if any _axis==true, it means freedom in that axis
+    // Thus, we have a constraint if _axis==false (no freedom in axis)
+    // So, we increment constraints only if !_axis
+    if(!_x) { _dof->constraints++; }
+    if(!_y) { _dof->constraints++; }
+    if(!_z) { _dof->constraints++; }
 }
 
 // --------------------------------------------------------------------------------
@@ -86,6 +95,7 @@ void setNodeProps(Node* _node, Point _position,
     _node->translation = _translation;
     _node->rotation = _rotation;
     _node->load = _load;
+    _node->constraints = _translation.constraints + _rotation.constraints;
 }
 
 // --------------------------------------------------------------------------------

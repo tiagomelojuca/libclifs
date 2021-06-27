@@ -29,6 +29,7 @@ extern "C" {
 // HEADER CONTENT -----------------------------------------------------------------
 
 #include <stddef.h>
+#include <stdbool.h>
 
 #define DOG    6
 #define SM     12
@@ -39,10 +40,7 @@ extern "C" {
 // By convention, uppercase letters are used for these definitions to
 // remind the user that the type name is really a symbolic abbreviation
 typedef unsigned char BYTE;
-
-#ifndef __cplusplus
-    typedef enum { false = 0, true = !false } bool;
-#endif
+typedef enum { ALL_FREE = 0, ALL_FIX } Constraint;
 
 // You can use typedef to give a name to your user defined data types as well
 // For example, you can use typedef with structure to define a new data type
@@ -60,6 +58,7 @@ typedef struct degreesOfFreedom {
     bool x;
     bool y;
     bool z;
+    int constraints;
 } DegreesOfFreedom;
 
 typedef struct nodalLoad {
@@ -76,6 +75,7 @@ typedef struct node {
     DegreesOfFreedom translation;
     DegreesOfFreedom rotation;
     NodalLoad load;
+    int constraints;
 } Node;
 
 typedef struct bar {
