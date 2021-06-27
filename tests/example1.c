@@ -51,19 +51,21 @@ int main()
     insertFrameBarGlobalSystem(&g, b3);
     insertFrameBarGlobalSystem(&g, b4);
 
+    printf("\n");
     printf("Number of Nodes: %i\n", g.nodeArray.used);
     printf("Number of FrameBars: %i\n", g.framebarsArray.used);
     printf("Number of Equations: %i\n", g.numEquations);
     printf("Number of Freedoms: %i\n", g.numEqFreedoms);
     printf("Number of Constraints: %i\n", g.numEqConstraint);
+    printf("\n");
 
     mountGlobalSystem(&g);
-    // printMatrix(g.mtxStiffness, g.numEquations, g.numEquations); printf("\n");
     // printMatrix(g.mtxNodalLoads, g.numEquations, 1); printf("\n");
     // printMatrix(g.mtxDisplacements, g.numEquations, 1); printf("\n");
     printMatrix(g.mtxConstraints, DOG, g.nodeArray.used); printf("\n");
     printMatrix(g.mtxFreedoms, DOG, g.nodeArray.used); printf("\n");
     printMatrix(g.mtxSpreading, g.framebarsArray.used, SM); printf("\n");
+    printMatrix(g.mtxStiffness, g.numEquations, g.numEquations); printf("\n");
 
     printf("Done.\n");
     freeGlobalSystem(&g);

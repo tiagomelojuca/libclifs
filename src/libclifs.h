@@ -207,6 +207,7 @@ void insertNodeGlobalSystem(GlobalSystem* _gSys, Node _node);
 void insertFrameBarGlobalSystem(GlobalSystem* _gSys, FrameBar _bar);
 void _fillDynamicMatrix(double** _matrix, int _nR, int _nC, double _initialValue);
 void _initStiffnessMatrix(GlobalSystem* _gSys, double initialValue);
+void _mountStiffnessMatrix(GlobalSystem* _gSys);
 void _freeStiffnessMatrix(GlobalSystem* _gSys);
 void _initNodalLoadVector(GlobalSystem* _gSys, double initialValue);
 void _freeNodalLoadVector(GlobalSystem* _gSys);

@@ -520,6 +520,24 @@ void _initStiffnessMatrix(GlobalSystem* _gSys, double initialValue)
 
 // --------------------------------------------------------------------------------
 
+void _mountStiffnessMatrix(GlobalSystem* _gSys)
+{
+    for(int i = 0; i < _gSys->framebarsArray.used; i++) {
+        FrameBar* fBars = _gSys->framebarsArray.framebars;
+        StiffnessMatrix* fBarStiffMatrix = &(fBars[i].stiffnessMatrix);
+        
+        for(int j = 0; j < SM; j++) {
+            int row = _gSys->mtxSpreading[i][j] - 1;
+            for(int k = 0; k < SM; k++) {
+                int col = _gSys->mtxSpreading[i][k] - 1;
+                _gSys->mtxStiffness[row][col] += fBarStiffMatrix->global[row][col];
+            }
+        }
+    }
+}
+
+// --------------------------------------------------------------------------------
+
 void _freeStiffnessMatrix(GlobalSystem* _gSys)
 {
     for(int i = 0; i < _gSys->numEquations; i++) {
@@ -752,6 +770,7 @@ void mountGlobalSystem(GlobalSystem* _gSys)
     _mountConstraintsMatrix(_gSys);
     _mountFreedomsMatrix(_gSys);
     _mountSpreadingMatrix(_gSys);
+    _mountStiffnessMatrix(_gSys);
 }
 
 // --------------------------------------------------------------------------------
