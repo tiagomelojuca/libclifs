@@ -30,6 +30,10 @@ extern "C" {
 
 #include <stddef.h>
 
+#define DOG    6
+#define SM     12
+#define RM     3
+
 // TYPES DECLARATION
 // REMINDER TO MYSELF (SOURCE-> www.tutorialspoint.com/cprogramming/c_typedef.htm)
 // By convention, uppercase letters are used for these definitions to
@@ -101,11 +105,11 @@ typedef struct section {
 } Section;
 
 typedef struct stiffnessMatrix {
-    double local[12][12];
-    double reducedRotation[3][3];
-    double rotation[12][12];
-    double transposeRotation[12][12];
-    double global[12][12];
+    double local[SM][SM];
+    double reducedRotation[RM][RM];
+    double rotation[SM][SM];
+    double transposeRotation[SM][SM];
+    double global[SM][SM];
 } StiffnessMatrix;
 
 typedef struct frameBar {
@@ -126,6 +130,14 @@ typedef struct frameBarArray {
     size_t used;
     size_t size;
 } FrameBarArray;
+
+typedef struct globalSystem {
+    NodeArray nodeArray;
+    FrameBarArray framebarsArray;
+    int numEquations;
+    int numEqFreedoms;
+    int numEqConstraint;
+} GlobalSystem;
 
 // --------------------------------------------------------------------------------
 
@@ -161,13 +173,14 @@ void setSectionProps(Section* _section, double _a,
                      double _iy, double _iz, double _j);
 Section createSection(double _a, double _iy, double _iz, double _j);
 
-void _fillMatrixDefaultValue(double _matrix[12][12], double _defaultValue);
-void _fillLocalStiffnessMatrix(double _matrix[12][12], Bar* _bar);
-void _fillReducedRotationMatrix(double _matrix[3][3], Bar* _bar);
-void _fillRotationMatrix(double _matrix[12][12], double _reducedMatrix[3][3]);
-void _fillTransposeRotationMatrix(double _matrix[12][12], double _other[12][12]);
-void _fillGlobalStiffnessMatrix(double _matrix[12][12],
-                                double _tRotation[12][12], double _local[12][12]);
+void _fillMatrixDefaultValue(double _matrix[SM][SM], double _defaultValue);
+void _fillMatrixNull(double _matrix[SM][SM]);
+void _fillLocalStiffnessMatrix(double _matrix[SM][SM], Bar* _bar);
+void _fillReducedRotationMatrix(double _matrix[RM][RM], Bar* _bar);
+void _fillRotationMatrix(double _matrix[SM][SM], double _reducedMatrix[RM][RM]);
+void _fillTransposeRotationMatrix(double _matrix[SM][SM], double _other[SM][SM]);
+void _fillGlobalStiffnessMatrix(double _matrix[SM][SM],
+                                double _tRotation[SM][SM], double _local[SM][SM]);
 void setStiffnessMatrix(StiffnessMatrix* _sMatrix, Bar* _associatedBar);
 
 void setFrameBarProps(FrameBar* _frameBar, Node _n1, Node _n2, Point _auxvec,
@@ -182,6 +195,11 @@ void freeNodeArray(NodeArray *_arr);
 void initFrameBarArray(FrameBarArray* _arr, size_t _initSize);
 void insertFrameBarArray(FrameBarArray* _arr, FrameBar _bar);
 void freeFrameBarArray(FrameBarArray *_arr);
+
+void initGlobalSystem(GlobalSystem* _gSys);
+void insertNodeGlobalSystem(GlobalSystem* _gSys, Node _node);
+void insertFrameBarGlobalSystem(GlobalSystem* _gSys, FrameBar _bar);
+void freeGlobalSystem(GlobalSystem* _gSys);
 
 // MAKE THIS HEADER FILE COMPATIBLE WITH C++ CODE TOO (END) -----------------------
 #ifdef __cplusplus

@@ -169,10 +169,10 @@ Section createSection(double _a, double _iy, double _iz, double _j)
 
 // --------------------------------------------------------------------------------
 
-void _fillMatrixDefaultValue(double _matrix[12][12], double _defaultValue)
+void _fillMatrixDefaultValue(double _matrix[SM][SM], double _defaultValue)
 {
-    for(int i = 0; i < 12; i++) {
-        for(int j = 0; j < 12; j++) {
+    for(int i = 0; i < SM; i++) {
+        for(int j = 0; j < SM; j++) {
             _matrix[i][j] = _defaultValue;
         }
     }
@@ -180,7 +180,14 @@ void _fillMatrixDefaultValue(double _matrix[12][12], double _defaultValue)
 
 // --------------------------------------------------------------------------------
 
-void _fillLocalStiffnessMatrix(double _matrix[12][12], Bar* _bar)
+void _fillMatrixNull(double _matrix[SM][SM])
+{
+    _fillMatrixDefaultValue(_matrix, 0.0);
+}
+
+// --------------------------------------------------------------------------------
+
+void _fillLocalStiffnessMatrix(double _matrix[SM][SM], Bar* _bar)
 {
     double L  = _bar->l;
     double E  = _bar->e;
@@ -234,7 +241,7 @@ void _fillLocalStiffnessMatrix(double _matrix[12][12], Bar* _bar)
 
 // --------------------------------------------------------------------------------
 
-void _fillReducedRotationMatrix(double _matrix[3][3], Bar* _bar)
+void _fillReducedRotationMatrix(double _matrix[RM][RM], Bar* _bar)
 {
     // This is all civil engineering business logic, don't bother at all
     _matrix[0][0] = (_bar->node2.position.x - _bar->node1.position.x) / _bar->l;
@@ -265,7 +272,7 @@ void _fillReducedRotationMatrix(double _matrix[3][3], Bar* _bar)
 
 // --------------------------------------------------------------------------------
 
-void _fillRotationMatrix(double _matrix[12][12], double _reducedMatrix[3][3])
+void _fillRotationMatrix(double _matrix[SM][SM], double _reducedMatrix[RM][RM])
 {
     // Civil engineering business logic, don't bother at all
     _matrix[0][0]   = _reducedMatrix[0][0];
@@ -316,10 +323,10 @@ void _fillRotationMatrix(double _matrix[12][12], double _reducedMatrix[3][3])
 
 // --------------------------------------------------------------------------------
 
-void _fillTransposeRotationMatrix(double _matrix[12][12], double _other[12][12])
+void _fillTransposeRotationMatrix(double _matrix[SM][SM], double _other[SM][SM])
 {
-    for(int i = 0; i < 12; i++) {
-        for(int j = 0; j < 12; j++) {
+    for(int i = 0; i < SM; i++) {
+        for(int j = 0; j < SM; j++) {
             _matrix[i][j] = _other[j][i];
         }
     }
@@ -327,12 +334,12 @@ void _fillTransposeRotationMatrix(double _matrix[12][12], double _other[12][12])
 
 // --------------------------------------------------------------------------------
 
-void _fillGlobalStiffnessMatrix(double _matrix[12][12],
-                                double _tRotation[12][12], double _local[12][12])
+void _fillGlobalStiffnessMatrix(double _matrix[SM][SM],
+                                double _tRotation[SM][SM], double _local[SM][SM])
 {
-    for(int i = 0; i < 12; i++) {
-        for(int j = 0; j < 12; j++) {
-            for(int k = 0; k < 12; k++) {
+    for(int i = 0; i < SM; i++) {
+        for(int j = 0; j < SM; j++) {
+            for(int k = 0; k < SM; k++) {
                 _matrix[i][j] += _tRotation[i][k] * _local[k][j];
             }
         }
@@ -343,10 +350,10 @@ void _fillGlobalStiffnessMatrix(double _matrix[12][12],
 
 void setStiffnessMatrix(StiffnessMatrix* _sMatrix, Bar* _associatedBar)
 {
-    _fillMatrixDefaultValue(_sMatrix->local, 1.0);
-    _fillMatrixDefaultValue(_sMatrix->rotation, 3.0);
-    _fillMatrixDefaultValue(_sMatrix->transposeRotation, 4.0);
-    _fillMatrixDefaultValue(_sMatrix->global, 5.0);
+    _fillMatrixNull(_sMatrix->local);
+    _fillMatrixNull(_sMatrix->rotation);
+    _fillMatrixNull(_sMatrix->transposeRotation);
+    _fillMatrixNull(_sMatrix->global);
 
     _fillLocalStiffnessMatrix(_sMatrix->local, _associatedBar);
     _fillReducedRotationMatrix(_sMatrix->reducedRotation, _associatedBar);
@@ -362,6 +369,9 @@ void setStiffnessMatrix(StiffnessMatrix* _sMatrix, Bar* _associatedBar)
 void setFrameBarProps(FrameBar* _frameBar, Node _n1, Node _n2, Point _auxvec,
                       Material* _material, Section* _section)
 {
+    _frameBar->material = *_material;
+    _frameBar->section = *_section;
+
     Bar* pBar = &(_frameBar->bar);
     setBarProps(pBar, _n1, _n2, _auxvec, _material, _section);
 
@@ -436,6 +446,44 @@ void freeFrameBarArray(FrameBarArray *_arr)
     free(_arr->framebars);
     _arr->framebars = NULL;
     _arr->used = _arr->size = 0;
+}
+
+// --------------------------------------------------------------------------------
+
+void initGlobalSystem(GlobalSystem* _gSys)
+{
+    NodeArray* pNodeArray = &(_gSys->nodeArray);
+    FrameBarArray* pFrameBarArray = &(_gSys->framebarsArray);
+
+    initNodeArray(pNodeArray, 1);
+    initFrameBarArray(pFrameBarArray, 1);
+}
+
+// --------------------------------------------------------------------------------
+
+void insertNodeGlobalSystem(GlobalSystem* _gSys, Node _node)
+{
+    NodeArray* pNodeArray = &(_gSys->nodeArray);
+    insertNodeArray(pNodeArray, _node);
+}
+
+// --------------------------------------------------------------------------------
+
+void insertFrameBarGlobalSystem(GlobalSystem* _gSys, FrameBar _bar)
+{
+    FrameBarArray* pFrameBarArray = &(_gSys->framebarsArray);
+    insertFrameBarArray(pFrameBarArray, _bar);
+}
+
+// --------------------------------------------------------------------------------
+
+void freeGlobalSystem(GlobalSystem* _gSys)
+{
+    NodeArray* pNodeArray = &(_gSys->nodeArray);
+    FrameBarArray* pFrameBarArray = &(_gSys->framebarsArray);
+
+    freeNodeArray(pNodeArray);
+    freeFrameBarArray(pFrameBarArray);
 }
 
 // --------------------------------------------------------------------------------
