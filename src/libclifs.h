@@ -210,6 +210,7 @@ void _initStiffnessMatrix(GlobalSystem* _gSys, double initialValue);
 void _mountStiffnessMatrix(GlobalSystem* _gSys);
 void _freeStiffnessMatrix(GlobalSystem* _gSys);
 void _initNodalLoadVector(GlobalSystem* _gSys, double initialValue);
+void _mountNodalLoadVector(GlobalSystem* _gSys);
 void _freeNodalLoadVector(GlobalSystem* _gSys);
 void _initDisplacementsMatrix(GlobalSystem* _gSys, double initialValue);
 void _freeDisplacementsMatrix(GlobalSystem* _gSys);

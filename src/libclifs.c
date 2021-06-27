@@ -564,6 +564,13 @@ void _initNodalLoadVector(GlobalSystem* _gSys, double initialValue)
 
 // --------------------------------------------------------------------------------
 
+void _mountNodalLoadVector(GlobalSystem* _gSys)
+{
+    //
+}
+
+// --------------------------------------------------------------------------------
+
 void _freeNodalLoadVector(GlobalSystem* _gSys)
 {
     for(int i = 0; i < _gSys->numEquations; i++) {
@@ -771,6 +778,7 @@ void mountGlobalSystem(GlobalSystem* _gSys)
     _mountFreedomsMatrix(_gSys);
     _mountSpreadingMatrix(_gSys);
     _mountStiffnessMatrix(_gSys);
+    _mountNodalLoadVector(_gSys);
 }
 
 // --------------------------------------------------------------------------------
