@@ -121,6 +121,12 @@ typedef struct nodeArray {
     size_t size;
 } NodeArray;
 
+typedef struct frameBarArray {
+    FrameBar* framebars;
+    size_t used;
+    size_t size;
+} FrameBarArray;
+
 // --------------------------------------------------------------------------------
 
 void setPointCoords(Point* _point, double _x, double _y, double _z);
@@ -172,6 +178,10 @@ FrameBar createFrameBar(Node _n1, Node _n2, Point _auxvec,
 void initNodeArray(NodeArray* _arr, size_t _initSize);
 void insertNodeArray(NodeArray* _arr, Node _node);
 void freeNodeArray(NodeArray *_arr);
+
+void initFrameBarArray(FrameBarArray* _arr, size_t _initSize);
+void insertFrameBarArray(FrameBarArray* _arr, FrameBar _bar);
+void freeFrameBarArray(FrameBarArray *_arr);
 
 // MAKE THIS HEADER FILE COMPATIBLE WITH C++ CODE TOO (END) -----------------------
 #ifdef __cplusplus

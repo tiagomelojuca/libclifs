@@ -410,3 +410,32 @@ void freeNodeArray(NodeArray *_arr)
 }
 
 // --------------------------------------------------------------------------------
+
+void initFrameBarArray(FrameBarArray* _arr, size_t _initSize)
+{
+    _arr->framebars = malloc(_initSize * sizeof(FrameBar));
+    _arr->used = 0;
+    _arr->size = _initSize;
+}
+
+// --------------------------------------------------------------------------------
+
+void insertFrameBarArray(FrameBarArray* _arr, FrameBar _bar)
+{
+    if(_arr->used == _arr->size) {
+        _arr->size *= 2;
+        _arr->framebars = realloc(_arr->framebars, _arr->size * sizeof(FrameBar));
+    }
+    _arr->framebars[_arr->used++] = _bar;
+}
+
+// --------------------------------------------------------------------------------
+
+void freeFrameBarArray(FrameBarArray *_arr)
+{
+    free(_arr->framebars);
+    _arr->framebars = NULL;
+    _arr->used = _arr->size = 0;
+}
+
+// --------------------------------------------------------------------------------
