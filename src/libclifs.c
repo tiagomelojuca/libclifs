@@ -462,12 +462,12 @@ void freeFrameBarArray(FrameBarArray *_arr)
 
 void initGlobalSystem(GlobalSystem* _gSys)
 {
+    NodeArray* pNodeArray = &(_gSys->nodeArray);
+    FrameBarArray* pFrameBarArray = &(_gSys->framebarsArray);
+
     _gSys->numEquations = 0;
     _gSys->numEqFreedoms = 0;
     _gSys->numEqConstraint = 0;
-
-    NodeArray* pNodeArray = &(_gSys->nodeArray);
-    FrameBarArray* pFrameBarArray = &(_gSys->framebarsArray);
 
     initNodeArray(pNodeArray, 1);
     initFrameBarArray(pFrameBarArray, 1);
@@ -664,17 +664,16 @@ void mountGlobalSystem(GlobalSystem* _gSys)
 
 void freeGlobalSystem(GlobalSystem* _gSys)
 {
-    _gSys->numEquations = 0;
-    _gSys->numEqFreedoms = 0;
-    _gSys->numEqConstraint = 0;
-    
     NodeArray* pNodeArray = &(_gSys->nodeArray);
     FrameBarArray* pFrameBarArray = &(_gSys->framebarsArray);
 
-    freeNodeArray(pNodeArray);
-    freeFrameBarArray(pFrameBarArray);
-
     _freeAllGlobalMatrix(_gSys);
+    freeFrameBarArray(pFrameBarArray);
+    freeNodeArray(pNodeArray);
+
+    _gSys->numEqConstraint = 0;
+    _gSys->numEqFreedoms = 0;
+    _gSys->numEquations = 0;
 }
 
 // --------------------------------------------------------------------------------
