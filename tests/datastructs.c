@@ -1,15 +1,6 @@
 #include <stdio.h>
 #include "../src/libclifs.h"
 
-void printMatrix(double _matrix[12][12]) {
-    for(int i = 0; i < 12; i++) {
-        for(int j = 0; j < 12; j++) {
-            printf("%f    ", _matrix[i][j]);
-        }
-        printf("\n");
-    }
-}
-
 int main()
 {
     NodeArray a;
