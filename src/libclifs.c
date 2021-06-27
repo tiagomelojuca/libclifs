@@ -462,6 +462,10 @@ void freeFrameBarArray(FrameBarArray *_arr)
 
 void initGlobalSystem(GlobalSystem* _gSys)
 {
+    _gSys->numEquations = 0;
+    _gSys->numEqFreedoms = 0;
+    _gSys->numEqConstraint = 0;
+
     NodeArray* pNodeArray = &(_gSys->nodeArray);
     FrameBarArray* pFrameBarArray = &(_gSys->framebarsArray);
 
@@ -475,6 +479,10 @@ void insertNodeGlobalSystem(GlobalSystem* _gSys, Node _node)
 {
     NodeArray* pNodeArray = &(_gSys->nodeArray);
     insertNodeArray(pNodeArray, _node);
+
+    _gSys->numEqConstraint += _node.constraints;
+    _gSys->numEquations = _gSys->nodeArray.used * DOG;
+    _gSys->numEqFreedoms = _gSys->numEquations - _gSys->numEqConstraint;
 }
 
 // --------------------------------------------------------------------------------
@@ -489,6 +497,10 @@ void insertFrameBarGlobalSystem(GlobalSystem* _gSys, FrameBar _bar)
 
 void freeGlobalSystem(GlobalSystem* _gSys)
 {
+    _gSys->numEquations = 0;
+    _gSys->numEqFreedoms = 0;
+    _gSys->numEqConstraint = 0;
+    
     NodeArray* pNodeArray = &(_gSys->nodeArray);
     FrameBarArray* pFrameBarArray = &(_gSys->framebarsArray);
 
