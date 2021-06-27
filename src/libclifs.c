@@ -598,6 +598,20 @@ void _initConstraintsMatrix(GlobalSystem* _gSys, double initialValue)
 
 // --------------------------------------------------------------------------------
 
+void _mountConstraintsMatrix(GlobalSystem* _gSys)
+{
+    for(int i = 0; i < _gSys->nodeArray.used; i++) {
+        if(!_gSys->nodeArray.nodes[i].translation.x) _gSys->mtxFreedoms[0][i] = 1;
+        if(!_gSys->nodeArray.nodes[i].translation.y) _gSys->mtxFreedoms[1][i] = 1;
+        if(!_gSys->nodeArray.nodes[i].translation.z) _gSys->mtxFreedoms[2][i] = 1;
+        if(!_gSys->nodeArray.nodes[i].rotation.x) _gSys->mtxFreedoms[3][i] = 1;
+        if(!_gSys->nodeArray.nodes[i].rotation.y) _gSys->mtxFreedoms[4][i] = 1;
+        if(!_gSys->nodeArray.nodes[i].rotation.z) _gSys->mtxFreedoms[5][i] = 1;
+    }
+}
+
+// --------------------------------------------------------------------------------
+
 void _freeConstraintsMatrix(GlobalSystem* _gSys)
 {
     for(int i = 0; i < DOG; i++) {
@@ -620,6 +634,26 @@ void _initFreedomsMatrix(GlobalSystem* _gSys, double initialValue)
     }
     
     _fillDynamicMatrix(_gSys->mtxFreedoms, DOG, nNodes, initialValue);
+}
+
+// --------------------------------------------------------------------------------
+
+void _mountFreedomsMatrix(GlobalSystem* _gSys)
+{
+    int countFreedoms = 0;
+    int countConstraints = _gSys->numEqFreedoms;
+
+    for(int i = 0; i < _gSys->nodeArray.used; i++) {
+        for(int j = 0; j < DOG; j++) {
+            if(_gSys->mtxConstraints[j][i] == 0) {
+                countFreedoms++;
+                _gSys->mtxFreedoms[j][i] = countFreedoms;
+            } else {
+                countConstraints++;
+                _gSys->mtxFreedoms[j][i] = countConstraints;
+            }
+        }
+    }
 }
 
 // --------------------------------------------------------------------------------
