@@ -491,11 +491,11 @@ void initGlobalSystem(GlobalSystem* _gSys)
     _gSys->numEqFreedoms = 0;
     _gSys->numEqConstraints = 0;
 
-    _gSys->mtxStiffness = NULL;
-    _gSys->mtxNodalLoads = NULL;
     _gSys->mtxConstraints = NULL;
     _gSys->mtxFreedoms = NULL;
     _gSys->mtxSpreading = NULL;
+    _gSys->mtxStiffness = NULL;
+    _gSys->mtxNodalLoads = NULL;
 
     _gSys->mtxDOFFrees = NULL;
     _gSys->mtxPartitionTop = NULL;
