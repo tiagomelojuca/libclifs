@@ -678,7 +678,7 @@ void _mountStiffnessMatrix(GlobalSystem* _gSys)
             int row = _gSys->mtxSpreading[i][j] - 1;
             for(int k = 0; k < SM; k++) {
                 int col = _gSys->mtxSpreading[i][k] - 1;
-                _gSys->mtxStiffness[row][col] += fBarStiffMatrix->global[row][col];
+                _gSys->mtxStiffness[row][col] += fBarStiffMatrix->global[j][k];
             }
         }
     }
