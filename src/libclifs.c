@@ -1024,22 +1024,23 @@ void _freeDisplacementsFree(GlobalSystem* _gSys)
 void _initAllGlobalMatrix(GlobalSystem* _gSys)
 {
     const int defaultValue = 0;
+    const double defaultValueAsDouble = (double) defaultValue;
 
     _initConstraintsMatrix(_gSys, defaultValue);
     _initFreedomsMatrix(_gSys, defaultValue);
     _initSpreadingMatrix(_gSys, defaultValue);
-    _initStiffnessMatrix(_gSys, (double) defaultValue);
-    _initNodalLoadVector(_gSys, (double) defaultValue);
+    _initStiffnessMatrix(_gSys, defaultValueAsDouble);
+    _initNodalLoadVector(_gSys, defaultValueAsDouble);
 
-    _initDOFFreesMatrix(_gSys, (double) defaultValue);
-    _initPartitionTopMatrix(_gSys, (double) defaultValue);
-    _initPartitionBotMatrix(_gSys, (double) defaultValue);
-    _initDOFConstrainedMatrix(_gSys, (double) defaultValue);
+    _initDOFFreesMatrix(_gSys, defaultValueAsDouble);
+    _initPartitionTopMatrix(_gSys, defaultValueAsDouble);
+    _initPartitionBotMatrix(_gSys, defaultValueAsDouble);
+    _initDOFConstrainedMatrix(_gSys, defaultValueAsDouble);
 
-    _initVecLoadsDOFFrees(_gSys, (double) defaultValue);
-    _initVecLoadsDOFConstrained(_gSys, (double) defaultValue);
-    _initVecDisplacementsConstrained(_gSys, (double) defaultValue);
-    _initDisplacementsFree(_gSys, (double) defaultValue);
+    _initVecLoadsDOFFrees(_gSys, defaultValueAsDouble);
+    _initVecLoadsDOFConstrained(_gSys, defaultValueAsDouble);
+    _initVecDisplacementsConstrained(_gSys, defaultValueAsDouble);
+    _initDisplacementsFree(_gSys, defaultValueAsDouble);
 }
 
 // --------------------------------------------------------------------------------
