@@ -788,7 +788,11 @@ void _initDOFFreesMatrix(GlobalSystem* _gSys, double _initValue)
 
 void _mountDOFFreesMatrix(GlobalSystem* _gSys)
 {
-    //
+    for(int i = 0; i < _gSys->numEqFreedoms; i++) {
+        for(int j = 0; j < _gSys->numEqFreedoms; j++) {
+            _gSys->mtxDOFFrees[i][j] = _gSys->mtxStiffness[i][j];
+        }
+    }
 }
 
 // --------------------------------------------------------------------------------
@@ -824,7 +828,12 @@ void _initPartitionTopMatrix(GlobalSystem* _gSys, double _initValue)
 
 void _mountPartitionTopMatrix(GlobalSystem* _gSys)
 {
-    //
+    const int offset = _gSys->numEqFreedoms;
+    for(int i = 0; i < _gSys->numEqFreedoms; i++) {
+        for(int j = 0; j < _gSys->numEqConstraints; j++) {
+            _gSys->mtxPartitionTop[i][j] = _gSys->mtxStiffness[i][j+offset];
+        }
+    }
 }
 
 // --------------------------------------------------------------------------------
@@ -860,7 +869,12 @@ void _initPartitionBotMatrix(GlobalSystem* _gSys, double _initValue)
 
 void _mountPartitionBotMatrix(GlobalSystem* _gSys)
 {
-    //
+    const int offset = _gSys->numEqFreedoms;
+    for(int i = 0; i < _gSys->numEqConstraints; i++) {
+        for(int j = 0; j < _gSys->numEqFreedoms; j++) {
+            _gSys->mtxPartitionBot[i][j] = _gSys->mtxStiffness[i+offset][j];
+        }
+    }
 }
 
 // --------------------------------------------------------------------------------
@@ -895,7 +909,13 @@ void _initDOFConstrainedMatrix(GlobalSystem* _gSys, double _initValue)
 
 void _mountDOFConstrainedMatrix(GlobalSystem* _gSys)
 {
-    //
+    // oset = offset = _gSys->numEqFreedoms (in this case)
+    const int oset = _gSys->numEqFreedoms;
+    for(int i = 0; i < _gSys->numEqConstraints; i++) {
+        for(int j = 0; j < _gSys->numEqConstraints; j++) {
+            _gSys->mtxDOFConstrained[i][j] = _gSys->mtxStiffness[i+oset][j+oset];
+        }
+    }
 }
 
 // --------------------------------------------------------------------------------
