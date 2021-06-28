@@ -955,7 +955,9 @@ void _initVecLoadsDOFFrees(GlobalSystem* _gSys, double _initValue)
 
 void _mountVecLoadsDOFFrees(GlobalSystem* _gSys)
 {
-    //
+    for(int i = 0; i < _gSys->numEqFreedoms; i++) {
+        _gSys->vecLoadsDOFFrees[i][0] = _gSys->mtxNodalLoads[i][0];
+    }
 }
 
 // --------------------------------------------------------------------------------
@@ -990,7 +992,10 @@ void _initVecLoadsDOFConstrained(GlobalSystem* _gSys, double _initValue)
 
 void _mountVecLoadsDOFConstrained(GlobalSystem* _gSys)
 {
-    //
+    const int offset = _gSys->numEqFreedoms;
+    for(int i = 0; i < _gSys->numEqConstraints; i++) {
+        _gSys->vecLoadsDOFConstrained[i][0] = _gSys->mtxNodalLoads[i+offset][0];
+    }
 }
 
 // --------------------------------------------------------------------------------
@@ -1026,7 +1031,6 @@ void _initVecDisplacementsConstrained(GlobalSystem* _gSys, double _initValue)
 
 void _mountVecDisplacementsConstrained(GlobalSystem* _gSys)
 {
-    //
 }
 
 // --------------------------------------------------------------------------------
@@ -1061,7 +1065,6 @@ void _initVecDisplacementsFree(GlobalSystem* _gSys, double _initValue)
 
 void _mountVecDisplacementsFree(GlobalSystem* _gSys)
 {
-    //
 }
 
 // --------------------------------------------------------------------------------
