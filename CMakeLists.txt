@@ -9,4 +9,5 @@ ADD_LIBRARY(
     clifs
     SHARED
     "${SRC_DIR}/libclifs.c"
+    "${SRC_DIR}/utils.c"
 )
