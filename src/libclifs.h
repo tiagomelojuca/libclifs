@@ -212,14 +212,6 @@ void initGlobalSystem(GlobalSystem* _gSys);
 void insertNodeGlobalSystem(GlobalSystem* _gSys, Node _node);
 void insertFrameBarGlobalSystem(GlobalSystem* _gSys, FrameBar _bar);
 
-void _initStiffnessMatrix(GlobalSystem* _gSys, double _initValue);
-void _mountStiffnessMatrix(GlobalSystem* _gSys);
-void _freeStiffnessMatrix(GlobalSystem* _gSys);
-
-void _initNodalLoadVector(GlobalSystem* _gSys, double _initValue);
-void _mountNodalLoadVector(GlobalSystem* _gSys);
-void _freeNodalLoadVector(GlobalSystem* _gSys);
-
 void _initConstraintsMatrix(GlobalSystem* _gSys, int _initValue);
 void _mountConstraintsMatrix(GlobalSystem* _gSys);
 void _freeConstraintsMatrix(GlobalSystem* _gSys);
@@ -231,6 +223,14 @@ void _freeFreedomsMatrix(GlobalSystem* _gSys);
 void _initSpreadingMatrix(GlobalSystem* _gSys, int _initValue);
 void _mountSpreadingMatrix(GlobalSystem* _gSys);
 void _freeSpreadingMatrix(GlobalSystem* _gSys);
+
+void _initStiffnessMatrix(GlobalSystem* _gSys, double _initValue);
+void _mountStiffnessMatrix(GlobalSystem* _gSys);
+void _freeStiffnessMatrix(GlobalSystem* _gSys);
+
+void _initNodalLoadVector(GlobalSystem* _gSys, double _initValue);
+void _mountNodalLoadVector(GlobalSystem* _gSys);
+void _freeNodalLoadVector(GlobalSystem* _gSys);
 
 void _initDOFFreesMatrix(GlobalSystem* _gSys, double _initValue);
 void _mountDOFFreesMatrix(GlobalSystem* _gSys);

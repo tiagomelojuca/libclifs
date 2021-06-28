@@ -528,101 +528,6 @@ void insertFrameBarGlobalSystem(GlobalSystem* _gSys, FrameBar _bar)
 
 // --------------------------------------------------------------------------------
 
-void _initStiffnessMatrix(GlobalSystem* _gSys, double _initValue)
-{
-    const int nEquations = _gSys->numEquations;
-
-    if(_gSys->mtxStiffness == NULL) {
-        _gSys->mtxStiffness = malloc(nEquations * sizeof(double*));
-        for(int i = 0; i < nEquations; i++) {
-            _gSys->mtxStiffness[i] = malloc(nEquations * sizeof(double));
-        }
-    }
-    
-    _fillDynDoubleMatrix(_gSys->mtxStiffness, nEquations, nEquations, _initValue);
-}
-
-// --------------------------------------------------------------------------------
-
-void _mountStiffnessMatrix(GlobalSystem* _gSys)
-{
-    for(int i = 0; i < _gSys->framebarsArray.used; i++) {
-        FrameBar* fBars = _gSys->framebarsArray.framebars;
-        StiffnessMatrix* fBarStiffMatrix = &(fBars[i].stiffnessMatrix);
-        
-        for(int j = 0; j < SM; j++) {
-            int row = _gSys->mtxSpreading[i][j] - 1;
-            for(int k = 0; k < SM; k++) {
-                int col = _gSys->mtxSpreading[i][k] - 1;
-                _gSys->mtxStiffness[row][col] += fBarStiffMatrix->global[row][col];
-            }
-        }
-    }
-}
-
-// --------------------------------------------------------------------------------
-
-void _freeStiffnessMatrix(GlobalSystem* _gSys)
-{
-    for(int i = 0; i < _gSys->numEquations; i++) {
-        double* currentPtr = _gSys->mtxStiffness[i];
-        free(currentPtr);
-    } free(_gSys->mtxStiffness);
-
-    _gSys->mtxStiffness = NULL;
-}
-
-// --------------------------------------------------------------------------------
-
-void _initNodalLoadVector(GlobalSystem* _gSys, double _initValue)
-{
-    const int nEquations = _gSys->numEquations;
-
-    if(_gSys->mtxNodalLoads == NULL) {
-        _gSys->mtxNodalLoads = malloc(nEquations * sizeof(double*));
-        for(int i = 0; i < nEquations; i++) {
-            _gSys->mtxNodalLoads[i] = malloc(1 * sizeof(double));
-        }
-    }
-    
-    _fillDynDoubleMatrix(_gSys->mtxNodalLoads, nEquations, 1, _initValue);
-}
-
-// --------------------------------------------------------------------------------
-
-void _mountNodalLoadVector(GlobalSystem* _gSys)
-{
-    for(int i = 0; i < _gSys->nodeArray.used; i++) {
-        int adjustedIndex = 0;
-
-        double loadVectorCurrentNode[6] = {_gSys->nodeArray.nodes[i].load.fx,
-                                           _gSys->nodeArray.nodes[i].load.fy,
-                                           _gSys->nodeArray.nodes[i].load.fz,
-                                           _gSys->nodeArray.nodes[i].load.mx,
-                                           _gSys->nodeArray.nodes[i].load.my,
-                                           _gSys->nodeArray.nodes[i].load.mz};
-
-        for(int j = 0; j < DOF; j++) {
-            adjustedIndex = _gSys->mtxFreedoms[j][i] - 1;
-            _gSys->mtxNodalLoads[adjustedIndex][0] += loadVectorCurrentNode[j];
-        }
-    }
-}
-
-// --------------------------------------------------------------------------------
-
-void _freeNodalLoadVector(GlobalSystem* _gSys)
-{
-    for(int i = 0; i < _gSys->numEquations; i++) {
-        double* currentPtr = _gSys->mtxNodalLoads[i];
-        free(currentPtr);
-    } free(_gSys->mtxNodalLoads);
-
-    _gSys->mtxNodalLoads = NULL;
-}
-
-// --------------------------------------------------------------------------------
-
 void _initConstraintsMatrix(GlobalSystem* _gSys, int _initValue)
 {
     const int nNodes = _gSys->nodeArray.used;
@@ -766,6 +671,101 @@ void _freeSpreadingMatrix(GlobalSystem* _gSys)
     } free(_gSys->mtxSpreading);
 
     _gSys->mtxSpreading = NULL;
+}
+
+// --------------------------------------------------------------------------------
+
+void _initStiffnessMatrix(GlobalSystem* _gSys, double _initValue)
+{
+    const int nEquations = _gSys->numEquations;
+
+    if(_gSys->mtxStiffness == NULL) {
+        _gSys->mtxStiffness = malloc(nEquations * sizeof(double*));
+        for(int i = 0; i < nEquations; i++) {
+            _gSys->mtxStiffness[i] = malloc(nEquations * sizeof(double));
+        }
+    }
+    
+    _fillDynDoubleMatrix(_gSys->mtxStiffness, nEquations, nEquations, _initValue);
+}
+
+// --------------------------------------------------------------------------------
+
+void _mountStiffnessMatrix(GlobalSystem* _gSys)
+{
+    for(int i = 0; i < _gSys->framebarsArray.used; i++) {
+        FrameBar* fBars = _gSys->framebarsArray.framebars;
+        StiffnessMatrix* fBarStiffMatrix = &(fBars[i].stiffnessMatrix);
+        
+        for(int j = 0; j < SM; j++) {
+            int row = _gSys->mtxSpreading[i][j] - 1;
+            for(int k = 0; k < SM; k++) {
+                int col = _gSys->mtxSpreading[i][k] - 1;
+                _gSys->mtxStiffness[row][col] += fBarStiffMatrix->global[row][col];
+            }
+        }
+    }
+}
+
+// --------------------------------------------------------------------------------
+
+void _freeStiffnessMatrix(GlobalSystem* _gSys)
+{
+    for(int i = 0; i < _gSys->numEquations; i++) {
+        double* currentPtr = _gSys->mtxStiffness[i];
+        free(currentPtr);
+    } free(_gSys->mtxStiffness);
+
+    _gSys->mtxStiffness = NULL;
+}
+
+// --------------------------------------------------------------------------------
+
+void _initNodalLoadVector(GlobalSystem* _gSys, double _initValue)
+{
+    const int nEquations = _gSys->numEquations;
+
+    if(_gSys->mtxNodalLoads == NULL) {
+        _gSys->mtxNodalLoads = malloc(nEquations * sizeof(double*));
+        for(int i = 0; i < nEquations; i++) {
+            _gSys->mtxNodalLoads[i] = malloc(1 * sizeof(double));
+        }
+    }
+    
+    _fillDynDoubleMatrix(_gSys->mtxNodalLoads, nEquations, 1, _initValue);
+}
+
+// --------------------------------------------------------------------------------
+
+void _mountNodalLoadVector(GlobalSystem* _gSys)
+{
+    for(int i = 0; i < _gSys->nodeArray.used; i++) {
+        int adjustedIndex = 0;
+
+        double loadVectorCurrentNode[6] = {_gSys->nodeArray.nodes[i].load.fx,
+                                           _gSys->nodeArray.nodes[i].load.fy,
+                                           _gSys->nodeArray.nodes[i].load.fz,
+                                           _gSys->nodeArray.nodes[i].load.mx,
+                                           _gSys->nodeArray.nodes[i].load.my,
+                                           _gSys->nodeArray.nodes[i].load.mz};
+
+        for(int j = 0; j < DOF; j++) {
+            adjustedIndex = _gSys->mtxFreedoms[j][i] - 1;
+            _gSys->mtxNodalLoads[adjustedIndex][0] += loadVectorCurrentNode[j];
+        }
+    }
+}
+
+// --------------------------------------------------------------------------------
+
+void _freeNodalLoadVector(GlobalSystem* _gSys)
+{
+    for(int i = 0; i < _gSys->numEquations; i++) {
+        double* currentPtr = _gSys->mtxNodalLoads[i];
+        free(currentPtr);
+    } free(_gSys->mtxNodalLoads);
+
+    _gSys->mtxNodalLoads = NULL;
 }
 
 // --------------------------------------------------------------------------------
@@ -916,11 +916,11 @@ void _initAllGlobalMatrix(GlobalSystem* _gSys)
 {
     const int defaultValue = 0;
 
-    _initStiffnessMatrix(_gSys, (double) defaultValue);
-    _initNodalLoadVector(_gSys, (double) defaultValue);
     _initConstraintsMatrix(_gSys, defaultValue);
     _initFreedomsMatrix(_gSys, defaultValue);
     _initSpreadingMatrix(_gSys, defaultValue);
+    _initStiffnessMatrix(_gSys, (double) defaultValue);
+    _initNodalLoadVector(_gSys, (double) defaultValue);
 
     _initDOFFreesMatrix(_gSys, (double) defaultValue);
     _initPartitionTopMatrix(_gSys, (double) defaultValue);
@@ -937,22 +937,27 @@ void _mountAllGlobalMatrix(GlobalSystem* _gSys)
     _mountSpreadingMatrix(_gSys);
     _mountStiffnessMatrix(_gSys);
     _mountNodalLoadVector(_gSys);
+
+    _mountDOFFreesMatrix(_gSys);
+    _mountPartitionTopMatrix(_gSys);
+    _mountPartitionBotMatrix(_gSys);
+    _mountDOFConstrainedMatrix(_gSys);
 }
 
 // --------------------------------------------------------------------------------
 
 void _freeAllGlobalMatrix(GlobalSystem* _gSys)
 {
-    _freeStiffnessMatrix(_gSys);
-    _freeNodalLoadVector(_gSys);
-    _freeConstraintsMatrix(_gSys);
-    _freeFreedomsMatrix(_gSys);
-    _freeSpreadingMatrix(_gSys);
-
-    _freeDOFFreesMatrix(_gSys);
-    _freePartitionTopMatrix(_gSys);
-    _freePartitionBotMatrix(_gSys);
     _freeDOFConstrainedMatrix(_gSys);
+    _freePartitionBotMatrix(_gSys);
+    _freePartitionTopMatrix(_gSys);
+    _freeDOFFreesMatrix(_gSys);
+
+    _freeNodalLoadVector(_gSys);
+    _freeStiffnessMatrix(_gSys);
+    _freeSpreadingMatrix(_gSys);
+    _freeFreedomsMatrix(_gSys);
+    _freeConstraintsMatrix(_gSys);
 }
 
 // --------------------------------------------------------------------------------
