@@ -489,7 +489,7 @@ void initGlobalSystem(GlobalSystem* _gSys)
 
     _gSys->numEquations = 0;
     _gSys->numEqFreedoms = 0;
-    _gSys->numEqConstraint = 0;
+    _gSys->numEqConstraints = 0;
 
     _gSys->mtxStiffness = NULL;
     _gSys->mtxNodalLoads = NULL;
@@ -513,9 +513,9 @@ void insertNodeGlobalSystem(GlobalSystem* _gSys, Node _node)
     NodeArray* pNodeArray = &(_gSys->nodeArray);
     insertNodeArray(pNodeArray, _node);
 
-    _gSys->numEqConstraint += _node.constraints;
+    _gSys->numEqConstraints += _node.constraints;
     _gSys->numEquations = _gSys->nodeArray.used * DOF;
-    _gSys->numEqFreedoms = _gSys->numEquations - _gSys->numEqConstraint;
+    _gSys->numEqFreedoms = _gSys->numEquations - _gSys->numEqConstraints;
 }
 
 // --------------------------------------------------------------------------------
@@ -808,7 +808,7 @@ void _freeDOFFreesMatrix(GlobalSystem* _gSys)
 void _initPartitionTopMatrix(GlobalSystem* _gSys, double _initValue)
 {
     const int nEqFree = _gSys->numEqFreedoms;
-    const int nEqFix = _gSys->numEqConstraint;
+    const int nEqFix = _gSys->numEqConstraints;
 
     if(_gSys->mtxPartitionTop == NULL) {
         _gSys->mtxPartitionTop = malloc(nEqFree * sizeof(double*));
@@ -844,7 +844,7 @@ void _freePartitionTopMatrix(GlobalSystem* _gSys)
 void _initPartitionBotMatrix(GlobalSystem* _gSys, double _initValue)
 {
     const int nEqFree = _gSys->numEqFreedoms;
-    const int nEqFix = _gSys->numEqConstraint;
+    const int nEqFix = _gSys->numEqConstraints;
 
     if(_gSys->mtxPartitionBot == NULL) {
         _gSys->mtxPartitionBot = malloc(nEqFix * sizeof(double*));
@@ -867,7 +867,7 @@ void _mountPartitionBotMatrix(GlobalSystem* _gSys)
 
 void _freePartitionBotMatrix(GlobalSystem* _gSys)
 {
-    for(int i = 0; i < _gSys->numEqConstraint; i++) {
+    for(int i = 0; i < _gSys->numEqConstraints; i++) {
         double* currentPtr = _gSys->mtxPartitionBot[i];
         free(currentPtr);
     } free(_gSys->mtxPartitionBot);
@@ -879,7 +879,7 @@ void _freePartitionBotMatrix(GlobalSystem* _gSys)
 
 void _initDOFConstrainedMatrix(GlobalSystem* _gSys, double _initValue)
 {
-    const int nEqFix = _gSys->numEqConstraint;
+    const int nEqFix = _gSys->numEqConstraints;
 
     if(_gSys->mtxDOFConstrained == NULL) {
         _gSys->mtxDOFConstrained = malloc(nEqFix * sizeof(double*));
@@ -902,7 +902,7 @@ void _mountDOFConstrainedMatrix(GlobalSystem* _gSys)
 
 void _freeDOFConstrainedMatrix(GlobalSystem* _gSys)
 {
-    for(int i = 0; i < _gSys->numEqConstraint; i++) {
+    for(int i = 0; i < _gSys->numEqConstraints; i++) {
         double* currentPtr = _gSys->mtxDOFConstrained[i];
         free(currentPtr);
     } free(_gSys->mtxDOFConstrained);
@@ -979,7 +979,7 @@ void freeGlobalSystem(GlobalSystem* _gSys)
     freeFrameBarArray(pFrameBarArray);
     freeNodeArray(pNodeArray);
 
-    _gSys->numEqConstraint = 0;
+    _gSys->numEqConstraints = 0;
     _gSys->numEqFreedoms = 0;
     _gSys->numEquations = 0;
 }

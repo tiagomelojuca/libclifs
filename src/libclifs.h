@@ -136,7 +136,7 @@ typedef struct globalSystem {
     FrameBarArray framebarsArray;
     int numEquations;
     int numEqFreedoms;
-    int numEqConstraint;
+    int numEqConstraints;
     int** mtxConstraints;
     int** mtxFreedoms;
     int** mtxSpreading;
