@@ -146,6 +146,10 @@ typedef struct globalSystem {
     double** mtxPartitionTop;
     double** mtxPartitionBot;
     double** mtxDOFConstrained;
+    double** vecLoadsDOFFrees;
+    double** vecLoadsDOFConstrained;
+    double** vecDisplacementsConstrained;
+    double** vecDisplacementsFree;
 } GlobalSystem;
 
 // --------------------------------------------------------------------------------
@@ -247,6 +251,22 @@ void _freePartitionBotMatrix(GlobalSystem* _gSys);
 void _initDOFConstrainedMatrix(GlobalSystem* _gSys, double _initValue);
 void _mountDOFConstrainedMatrix(GlobalSystem* _gSys);
 void _freeDOFConstrainedMatrix(GlobalSystem* _gSys);
+
+void _initVecLoadsDOFFrees(GlobalSystem* _gSys, double _initValue);
+void _mountVecLoadsDOFFrees(GlobalSystem* _gSys);
+void _freeVecLoadsDOFFrees(GlobalSystem* _gSys);
+
+void _initVecLoadsDOFConstrained(GlobalSystem* _gSys, double _initValue);
+void _mountVecLoadsDOFConstrained(GlobalSystem* _gSys);
+void _freeVecLoadsDOFConstrained(GlobalSystem* _gSys);
+
+void _initVecDisplacementsConstrained(GlobalSystem* _gSys, double _initValue);
+void _mountVecDisplacementsConstrained(GlobalSystem* _gSys);
+void _freeVecDisplacementsConstrained(GlobalSystem* _gSys);
+
+void _initDisplacementsFree(GlobalSystem* _gSys, double _initValue);
+void _mountDisplacementsFree(GlobalSystem* _gSys);
+void _freeDisplacementsFree(GlobalSystem* _gSys);
 
 void _initAllGlobalMatrix(GlobalSystem* _gSys);
 void _mountAllGlobalMatrix(GlobalSystem* _gSys);

@@ -502,6 +502,11 @@ void initGlobalSystem(GlobalSystem* _gSys)
     _gSys->mtxPartitionBot = NULL;
     _gSys->mtxDOFConstrained = NULL;
 
+    _gSys->vecLoadsDOFFrees = NULL;
+    _gSys->vecLoadsDOFConstrained = NULL;
+    _gSys->vecDisplacementsConstrained = NULL;
+    _gSys->vecDisplacementsFree = NULL;
+
     initNodeArray(pNodeArray, 1);
     initFrameBarArray(pFrameBarArray, 1);
 }
@@ -932,6 +937,90 @@ void _freeDOFConstrainedMatrix(GlobalSystem* _gSys)
 
 // --------------------------------------------------------------------------------
 
+void _initVecLoadsDOFFrees(GlobalSystem* _gSys, double _initValue)
+{
+    //
+}
+
+// --------------------------------------------------------------------------------
+
+void _mountVecLoadsDOFFrees(GlobalSystem* _gSys)
+{
+    //
+}
+
+// --------------------------------------------------------------------------------
+
+void _freeVecLoadsDOFFrees(GlobalSystem* _gSys)
+{
+    //
+}
+
+// --------------------------------------------------------------------------------
+
+void _initVecLoadsDOFConstrained(GlobalSystem* _gSys, double _initValue)
+{
+    //
+}
+
+// --------------------------------------------------------------------------------
+
+void _mountVecLoadsDOFConstrained(GlobalSystem* _gSys)
+{
+    //
+}
+
+// --------------------------------------------------------------------------------
+
+void _freeVecLoadsDOFConstrained(GlobalSystem* _gSys)
+{
+    //
+}
+
+// --------------------------------------------------------------------------------
+
+void _initVecDisplacementsConstrained(GlobalSystem* _gSys, double _initValue)
+{
+    //
+}
+
+// --------------------------------------------------------------------------------
+
+void _mountVecDisplacementsConstrained(GlobalSystem* _gSys)
+{
+    //
+}
+
+// --------------------------------------------------------------------------------
+
+void _freeVecDisplacementsConstrained(GlobalSystem* _gSys)
+{
+    //
+}
+
+// --------------------------------------------------------------------------------
+
+void _initDisplacementsFree(GlobalSystem* _gSys, double _initValue)
+{
+    //
+}
+
+// --------------------------------------------------------------------------------
+
+void _mountDisplacementsFree(GlobalSystem* _gSys)
+{
+    //
+}
+
+// --------------------------------------------------------------------------------
+
+void _freeDisplacementsFree(GlobalSystem* _gSys)
+{
+    //
+}
+
+// --------------------------------------------------------------------------------
+
 void _initAllGlobalMatrix(GlobalSystem* _gSys)
 {
     const int defaultValue = 0;
@@ -946,6 +1035,11 @@ void _initAllGlobalMatrix(GlobalSystem* _gSys)
     _initPartitionTopMatrix(_gSys, (double) defaultValue);
     _initPartitionBotMatrix(_gSys, (double) defaultValue);
     _initDOFConstrainedMatrix(_gSys, (double) defaultValue);
+
+    _initVecLoadsDOFFrees(_gSys, (double) defaultValue);
+    _initVecLoadsDOFConstrained(_gSys, (double) defaultValue);
+    _initVecDisplacementsConstrained(_gSys, (double) defaultValue);
+    _initDisplacementsFree(_gSys, (double) defaultValue);
 }
 
 // --------------------------------------------------------------------------------
@@ -962,12 +1056,22 @@ void _mountAllGlobalMatrix(GlobalSystem* _gSys)
     _mountPartitionTopMatrix(_gSys);
     _mountPartitionBotMatrix(_gSys);
     _mountDOFConstrainedMatrix(_gSys);
+
+    _mountVecLoadsDOFFrees(_gSys);
+    _mountVecLoadsDOFConstrained(_gSys);
+    _mountVecDisplacementsConstrained(_gSys);
+    _mountDisplacementsFree(_gSys);
 }
 
 // --------------------------------------------------------------------------------
 
 void _freeAllGlobalMatrix(GlobalSystem* _gSys)
 {
+    _freeDisplacementsFree(_gSys);
+    _freeVecDisplacementsConstrained(_gSys);
+    _freeVecLoadsDOFConstrained(_gSys);
+    _freeVecLoadsDOFFrees(_gSys);
+
     _freeDOFConstrainedMatrix(_gSys);
     _freePartitionBotMatrix(_gSys);
     _freePartitionTopMatrix(_gSys);
