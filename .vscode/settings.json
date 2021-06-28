@@ -1,4 +1,7 @@
 {
+    "editor.rulers": [
+        83
+    ],
     "files.associations": {
         "cmath": "c",
         "complex": "c",
