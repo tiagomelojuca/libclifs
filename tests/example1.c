@@ -2,11 +2,20 @@
 #include <stdlib.h>
 #include "../src/libclifs.h"
 
-void printMatrix(double** matrix, int nRows, int nColumns)
+void printDoubleMatrix(double** matrix, int nRows, int nColumns)
 {
     for(int i = 0; i < nRows; i++) {
         for(int j = 0; j < nColumns; j++) {
             printf("%.1f  ", matrix[i][j]);
+        } printf("\n");
+    }
+}
+
+void printIntMatrix(int** matrix, int nRows, int nColumns)
+{
+    for(int i = 0; i < nRows; i++) {
+        for(int j = 0; j < nColumns; j++) {
+            printf("%d  ", matrix[i][j]);
         } printf("\n");
     }
 }
@@ -61,11 +70,11 @@ int main()
 
     mountGlobalSystem(&g);
     // printMatrix(g.mtxDisplacements, g.numEquations, 1); printf("\n");
-    printMatrix(g.mtxConstraints, DOG, g.nodeArray.used); printf("\n");
-    printMatrix(g.mtxFreedoms, DOG, g.nodeArray.used); printf("\n");
-    printMatrix(g.mtxSpreading, g.framebarsArray.used, SM); printf("\n");
-    printMatrix(g.mtxStiffness, g.numEquations, g.numEquations); printf("\n");
-    printMatrix(g.mtxNodalLoads, g.numEquations, 1); printf("\n");
+    // printIntMatrix(g.mtxConstraints, DOG, g.nodeArray.used); printf("\n");
+    // printIntMatrix(g.mtxFreedoms, DOG, g.nodeArray.used); printf("\n");
+    // printIntMatrix(g.mtxSpreading, g.framebarsArray.used, SM); printf("\n");
+    printDoubleMatrix(g.mtxStiffness, g.numEquations, g.numEquations); printf("\n");
+    // printDoubleMatrix(g.mtxNodalLoads, g.numEquations, 1); printf("\n");
 
     printf("Done.\n");
     freeGlobalSystem(&g);
