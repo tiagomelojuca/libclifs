@@ -974,7 +974,16 @@ void _freeVecLoadsDOFFrees(GlobalSystem* _gSys)
 
 void _initVecLoadsDOFConstrained(GlobalSystem* _gSys, double _initValue)
 {
-    //
+    const int nEqFix = _gSys->numEqConstraints;
+
+    if(_gSys->vecLoadsDOFConstrained == NULL) {
+        _gSys->vecLoadsDOFConstrained = malloc(nEqFix * sizeof(double*));
+        for(int i = 0; i < nEqFix; i++) {
+            _gSys->vecLoadsDOFConstrained[i] = malloc(1 * sizeof(double));
+        }
+    }
+    
+    _fillDynDoubleMatrix(_gSys->vecLoadsDOFConstrained, nEqFix, 1, _initValue);
 }
 
 // --------------------------------------------------------------------------------
@@ -988,7 +997,12 @@ void _mountVecLoadsDOFConstrained(GlobalSystem* _gSys)
 
 void _freeVecLoadsDOFConstrained(GlobalSystem* _gSys)
 {
-    //
+    for(int i = 0; i < _gSys->numEqConstraints; i++) {
+        double* currentPtr = _gSys->vecLoadsDOFConstrained[i];
+        free(currentPtr);
+    } free(_gSys->vecLoadsDOFConstrained);
+
+    _gSys->vecLoadsDOFConstrained = NULL;
 }
 
 // --------------------------------------------------------------------------------
