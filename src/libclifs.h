@@ -31,7 +31,7 @@ extern "C" {
 #include <stddef.h>
 #include <stdbool.h>
 
-#define DOG    6
+#define DOF    6
 #define SM     12
 #define RM     3
 

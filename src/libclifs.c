@@ -510,7 +510,7 @@ void insertNodeGlobalSystem(GlobalSystem* _gSys, Node _node)
     insertNodeArray(pNodeArray, _node);
 
     _gSys->numEqConstraint += _node.constraints;
-    _gSys->numEquations = _gSys->nodeArray.used * DOG;
+    _gSys->numEquations = _gSys->nodeArray.used * DOF;
     _gSys->numEqFreedoms = _gSys->numEquations - _gSys->numEqConstraint;
 }
 
@@ -598,7 +598,7 @@ void _mountNodalLoadVector(GlobalSystem* _gSys)
                                            _gSys->nodeArray.nodes[i].load.my,
                                            _gSys->nodeArray.nodes[i].load.mz};
 
-        for(int j = 0; j < DOG; j++) {
+        for(int j = 0; j < DOF; j++) {
             adjustedIndex = _gSys->mtxFreedoms[j][i] - 1;
             _gSys->mtxNodalLoads[adjustedIndex][0] += loadVectorCurrentNode[j];
         }
@@ -652,13 +652,13 @@ void _initConstraintsMatrix(GlobalSystem* _gSys, int _initValue)
     const int nNodes = _gSys->nodeArray.used;
 
     if(_gSys->mtxConstraints == NULL) {
-        _gSys->mtxConstraints = malloc(DOG * sizeof(int*));
-        for(int i = 0; i < DOG; i++) {
+        _gSys->mtxConstraints = malloc(DOF * sizeof(int*));
+        for(int i = 0; i < DOF; i++) {
             _gSys->mtxConstraints[i] = malloc(nNodes * sizeof(int));
         }
     }
     
-    _fillDynIntMatrix(_gSys->mtxConstraints, DOG, nNodes, _initValue);
+    _fillDynIntMatrix(_gSys->mtxConstraints, DOF, nNodes, _initValue);
 }
 
 // --------------------------------------------------------------------------------
@@ -686,7 +686,7 @@ void _mountConstraintsMatrix(GlobalSystem* _gSys)
 
 void _freeConstraintsMatrix(GlobalSystem* _gSys)
 {
-    for(int i = 0; i < DOG; i++) {
+    for(int i = 0; i < DOF; i++) {
         int* currentPtr = _gSys->mtxConstraints[i];
         free(currentPtr);
     } free(_gSys->mtxConstraints);
@@ -701,13 +701,13 @@ void _initFreedomsMatrix(GlobalSystem* _gSys, int _initValue)
     const int nNodes = _gSys->nodeArray.used;
 
     if(_gSys->mtxFreedoms == NULL) {
-        _gSys->mtxFreedoms = malloc(DOG * sizeof(int*));
-        for(int i = 0; i < DOG; i++) {
+        _gSys->mtxFreedoms = malloc(DOF * sizeof(int*));
+        for(int i = 0; i < DOF; i++) {
             _gSys->mtxFreedoms[i] = malloc(nNodes * sizeof(int));
         }
     }
     
-    _fillDynIntMatrix(_gSys->mtxFreedoms, DOG, nNodes, _initValue);
+    _fillDynIntMatrix(_gSys->mtxFreedoms, DOF, nNodes, _initValue);
 }
 
 // --------------------------------------------------------------------------------
@@ -718,7 +718,7 @@ void _mountFreedomsMatrix(GlobalSystem* _gSys)
     int countConstraints = _gSys->numEqFreedoms;
 
     for(int i = 0; i < _gSys->nodeArray.used; i++) {
-        for(int j = 0; j < DOG; j++) {
+        for(int j = 0; j < DOF; j++) {
             if(_gSys->mtxConstraints[j][i] == 0) {
                 countFreedoms++;
                 _gSys->mtxFreedoms[j][i] = countFreedoms;
@@ -734,7 +734,7 @@ void _mountFreedomsMatrix(GlobalSystem* _gSys)
 
 void _freeFreedomsMatrix(GlobalSystem* _gSys)
 {
-    for(int i = 0; i < DOG; i++) {
+    for(int i = 0; i < DOF; i++) {
         int* currentPtr = _gSys->mtxFreedoms[i];
         free(currentPtr);
     } free(_gSys->mtxFreedoms);
@@ -763,18 +763,18 @@ void _initSpreadingMatrix(GlobalSystem* _gSys, int _initValue)
 void _mountSpreadingMatrix(GlobalSystem* _gSys)
 {
     for(int i = 0; i < _gSys->framebarsArray.used; i++) {
-        for(int j = 0; j < DOG; j++) {
+        for(int j = 0; j < DOF; j++) {
             Node* pNode = _gSys->framebarsArray.framebars[i].bar.node1;
             int nIndex = pNode - _gSys->nodeArray.nodes;
 
             _gSys->mtxSpreading[i][j] = _gSys->mtxFreedoms[j][nIndex];
         }
 
-        for(int j = DOG; j < SM; j++) {
+        for(int j = DOF; j < SM; j++) {
             Node* pNode = _gSys->framebarsArray.framebars[i].bar.node2;
             int nIndex = pNode - _gSys->nodeArray.nodes;
             
-            int adjustedIndex = j - DOG;
+            int adjustedIndex = j - DOF;
             _gSys->mtxSpreading[i][j] = _gSys->mtxFreedoms[adjustedIndex][nIndex];
         }
     }
