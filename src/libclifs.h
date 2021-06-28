@@ -142,7 +142,10 @@ typedef struct globalSystem {
     int** mtxSpreading;
     double** mtxStiffness;
     double** mtxNodalLoads;
-    double** mtxDisplacements;
+    double** mtxDOFFrees;
+    double** mtxPartitionTop;
+    double** mtxPartitionBot;
+    double** mtxDOFConstrained;
 } GlobalSystem;
 
 // --------------------------------------------------------------------------------
@@ -208,26 +211,47 @@ void freeFrameBarArray(FrameBarArray *_arr);
 void initGlobalSystem(GlobalSystem* _gSys);
 void insertNodeGlobalSystem(GlobalSystem* _gSys, Node _node);
 void insertFrameBarGlobalSystem(GlobalSystem* _gSys, FrameBar _bar);
+
 void _initStiffnessMatrix(GlobalSystem* _gSys, double _initValue);
 void _mountStiffnessMatrix(GlobalSystem* _gSys);
 void _freeStiffnessMatrix(GlobalSystem* _gSys);
+
 void _initNodalLoadVector(GlobalSystem* _gSys, double _initValue);
 void _mountNodalLoadVector(GlobalSystem* _gSys);
 void _freeNodalLoadVector(GlobalSystem* _gSys);
-void _initDisplacementsMatrix(GlobalSystem* _gSys, double _initValue);
-void _freeDisplacementsMatrix(GlobalSystem* _gSys);
+
 void _initConstraintsMatrix(GlobalSystem* _gSys, int _initValue);
 void _mountConstraintsMatrix(GlobalSystem* _gSys);
 void _freeConstraintsMatrix(GlobalSystem* _gSys);
+
 void _initFreedomsMatrix(GlobalSystem* _gSys, int _initValue);
 void _mountFreedomsMatrix(GlobalSystem* _gSys);
 void _freeFreedomsMatrix(GlobalSystem* _gSys);
+
 void _initSpreadingMatrix(GlobalSystem* _gSys, int _initValue);
 void _mountSpreadingMatrix(GlobalSystem* _gSys);
 void _freeSpreadingMatrix(GlobalSystem* _gSys);
+
+void _initDOFFreesMatrix(GlobalSystem* _gSys, double _initValue);
+void _mountDOFFreesMatrix(GlobalSystem* _gSys);
+void _freeDOFFreesMatrix(GlobalSystem* _gSys);
+
+void _initPartitionTopMatrix(GlobalSystem* _gSys, double _initValue);
+void _mountPartitionTopMatrix(GlobalSystem* _gSys);
+void _freePartitionTopMatrix(GlobalSystem* _gSys);
+
+void _initPartitionBotMatrix(GlobalSystem* _gSys, double _initValue);
+void _mountPartitionBotMatrix(GlobalSystem* _gSys);
+void _freePartitionBotMatrix(GlobalSystem* _gSys);
+
+void _initDOFConstrainedMatrix(GlobalSystem* _gSys, double _initValue);
+void _mountDOFConstrainedMatrix(GlobalSystem* _gSys);
+void _freeDOFConstrainedMatrix(GlobalSystem* _gSys);
+
 void _initAllGlobalMatrix(GlobalSystem* _gSys);
 void _mountAllGlobalMatrix(GlobalSystem* _gSys);
 void _freeAllGlobalMatrix(GlobalSystem* _gSys);
+
 void mountGlobalSystem(GlobalSystem* _gSys);
 void freeGlobalSystem(GlobalSystem* _gSys);
 

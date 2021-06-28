@@ -493,10 +493,14 @@ void initGlobalSystem(GlobalSystem* _gSys)
 
     _gSys->mtxStiffness = NULL;
     _gSys->mtxNodalLoads = NULL;
-    _gSys->mtxDisplacements = NULL;
     _gSys->mtxConstraints = NULL;
     _gSys->mtxFreedoms = NULL;
     _gSys->mtxSpreading = NULL;
+
+    _gSys->mtxDOFFrees = NULL;
+    _gSys->mtxPartitionTop = NULL;
+    _gSys->mtxPartitionBot = NULL;
+    _gSys->mtxDOFConstrained = NULL;
 
     initNodeArray(pNodeArray, 1);
     initFrameBarArray(pFrameBarArray, 1);
@@ -615,34 +619,6 @@ void _freeNodalLoadVector(GlobalSystem* _gSys)
     } free(_gSys->mtxNodalLoads);
 
     _gSys->mtxNodalLoads = NULL;
-}
-
-// --------------------------------------------------------------------------------
-
-void _initDisplacementsMatrix(GlobalSystem* _gSys, double _initValue)
-{
-    const int nEquations = _gSys->numEquations;
-
-    if(_gSys->mtxDisplacements == NULL) {
-        _gSys->mtxDisplacements = malloc(nEquations * sizeof(double*));
-        for(int i = 0; i < nEquations; i++) {
-            _gSys->mtxDisplacements[i] = malloc(1 * sizeof(double));
-        }
-    }
-    
-    _fillDynDoubleMatrix(_gSys->mtxDisplacements, nEquations, 1, _initValue);
-}
-
-// --------------------------------------------------------------------------------
-
-void _freeDisplacementsMatrix(GlobalSystem* _gSys)
-{
-    for(int i = 0; i < _gSys->numEquations; i++) {
-        double* currentPtr = _gSys->mtxDisplacements[i];
-        free(currentPtr);
-    } free(_gSys->mtxDisplacements);
-
-    _gSys->mtxDisplacements = NULL;
 }
 
 // --------------------------------------------------------------------------------
@@ -794,16 +770,162 @@ void _freeSpreadingMatrix(GlobalSystem* _gSys)
 
 // --------------------------------------------------------------------------------
 
+void _initDOFFreesMatrix(GlobalSystem* _gSys, double _initValue)
+{
+    const int nEqFreedoms = _gSys->numEqFreedoms;
+
+    if(_gSys->mtxDOFFrees == NULL) {
+        _gSys->mtxDOFFrees = malloc(nEqFreedoms * sizeof(double*));
+        for(int i = 0; i < nEqFreedoms; i++) {
+            _gSys->mtxDOFFrees[i] = malloc(nEqFreedoms * sizeof(double));
+        }
+    }
+    
+    _fillDynDoubleMatrix(_gSys->mtxDOFFrees, nEqFreedoms, nEqFreedoms, _initValue);
+}
+
+// --------------------------------------------------------------------------------
+
+void _mountDOFFreesMatrix(GlobalSystem* _gSys)
+{
+    //
+}
+
+// --------------------------------------------------------------------------------
+
+void _freeDOFFreesMatrix(GlobalSystem* _gSys)
+{
+    for(int i = 0; i < _gSys->numEqFreedoms; i++) {
+        double* currentPtr = _gSys->mtxDOFFrees[i];
+        free(currentPtr);
+    } free(_gSys->mtxDOFFrees);
+
+    _gSys->mtxDOFFrees = NULL;
+}
+
+// --------------------------------------------------------------------------------
+
+void _initPartitionTopMatrix(GlobalSystem* _gSys, double _initValue)
+{
+    const int nEqFree = _gSys->numEqFreedoms;
+    const int nEqFix = _gSys->numEqConstraint;
+
+    if(_gSys->mtxPartitionTop == NULL) {
+        _gSys->mtxPartitionTop = malloc(nEqFree * sizeof(double*));
+        for(int i = 0; i < nEqFree; i++) {
+            _gSys->mtxPartitionTop[i] = malloc(nEqFix * sizeof(double));
+        }
+    }
+    
+    _fillDynDoubleMatrix(_gSys->mtxPartitionTop, nEqFree, nEqFix, _initValue);
+}
+
+// --------------------------------------------------------------------------------
+
+void _mountPartitionTopMatrix(GlobalSystem* _gSys)
+{
+    //
+}
+
+// --------------------------------------------------------------------------------
+
+void _freePartitionTopMatrix(GlobalSystem* _gSys)
+{
+    for(int i = 0; i < _gSys->numEqFreedoms; i++) {
+        double* currentPtr = _gSys->mtxPartitionTop[i];
+        free(currentPtr);
+    } free(_gSys->mtxPartitionTop);
+
+    _gSys->mtxPartitionTop = NULL;
+}
+
+// --------------------------------------------------------------------------------
+
+void _initPartitionBotMatrix(GlobalSystem* _gSys, double _initValue)
+{
+    const int nEqFree = _gSys->numEqFreedoms;
+    const int nEqFix = _gSys->numEqConstraint;
+
+    if(_gSys->mtxPartitionBot == NULL) {
+        _gSys->mtxPartitionBot = malloc(nEqFix * sizeof(double*));
+        for(int i = 0; i < nEqFix; i++) {
+            _gSys->mtxPartitionBot[i] = malloc(nEqFree * sizeof(double));
+        }
+    }
+    
+    _fillDynDoubleMatrix(_gSys->mtxPartitionBot, nEqFix, nEqFree, _initValue);
+}
+
+// --------------------------------------------------------------------------------
+
+void _mountPartitionBotMatrix(GlobalSystem* _gSys)
+{
+    //
+}
+
+// --------------------------------------------------------------------------------
+
+void _freePartitionBotMatrix(GlobalSystem* _gSys)
+{
+    for(int i = 0; i < _gSys->numEqConstraint; i++) {
+        double* currentPtr = _gSys->mtxPartitionBot[i];
+        free(currentPtr);
+    } free(_gSys->mtxPartitionBot);
+
+    _gSys->mtxPartitionBot = NULL;
+}
+
+// --------------------------------------------------------------------------------
+
+void _initDOFConstrainedMatrix(GlobalSystem* _gSys, double _initValue)
+{
+    const int nEqFix = _gSys->numEqConstraint;
+
+    if(_gSys->mtxDOFConstrained == NULL) {
+        _gSys->mtxDOFConstrained = malloc(nEqFix * sizeof(double*));
+        for(int i = 0; i < nEqFix; i++) {
+            _gSys->mtxDOFConstrained[i] = malloc(nEqFix * sizeof(double));
+        }
+    }
+    
+    _fillDynDoubleMatrix(_gSys->mtxDOFConstrained, nEqFix, nEqFix, _initValue);
+}
+
+// --------------------------------------------------------------------------------
+
+void _mountDOFConstrainedMatrix(GlobalSystem* _gSys)
+{
+    //
+}
+
+// --------------------------------------------------------------------------------
+
+void _freeDOFConstrainedMatrix(GlobalSystem* _gSys)
+{
+    for(int i = 0; i < _gSys->numEqConstraint; i++) {
+        double* currentPtr = _gSys->mtxDOFConstrained[i];
+        free(currentPtr);
+    } free(_gSys->mtxDOFConstrained);
+
+    _gSys->mtxDOFConstrained = NULL;
+}
+
+// --------------------------------------------------------------------------------
+
 void _initAllGlobalMatrix(GlobalSystem* _gSys)
 {
     const int defaultValue = 0;
 
     _initStiffnessMatrix(_gSys, (double) defaultValue);
     _initNodalLoadVector(_gSys, (double) defaultValue);
-    _initDisplacementsMatrix(_gSys, (double) defaultValue);
     _initConstraintsMatrix(_gSys, defaultValue);
     _initFreedomsMatrix(_gSys, defaultValue);
     _initSpreadingMatrix(_gSys, defaultValue);
+
+    _initDOFFreesMatrix(_gSys, (double) defaultValue);
+    _initPartitionTopMatrix(_gSys, (double) defaultValue);
+    _initPartitionBotMatrix(_gSys, (double) defaultValue);
+    _initDOFConstrainedMatrix(_gSys, (double) defaultValue);
 }
 
 // --------------------------------------------------------------------------------
@@ -823,10 +945,14 @@ void _freeAllGlobalMatrix(GlobalSystem* _gSys)
 {
     _freeStiffnessMatrix(_gSys);
     _freeNodalLoadVector(_gSys);
-    _freeDisplacementsMatrix(_gSys);
     _freeConstraintsMatrix(_gSys);
     _freeFreedomsMatrix(_gSys);
     _freeSpreadingMatrix(_gSys);
+
+    _freeDOFFreesMatrix(_gSys);
+    _freePartitionTopMatrix(_gSys);
+    _freePartitionBotMatrix(_gSys);
+    _freeDOFConstrainedMatrix(_gSys);
 }
 
 // --------------------------------------------------------------------------------
