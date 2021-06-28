@@ -179,8 +179,11 @@ void setSectionProps(Section* _section, double _a,
                      double _iy, double _iz, double _j);
 Section createSection(double _a, double _iy, double _iz, double _j);
 
-void _fillMatrixDefaultValue(double _matrix[SM][SM], double _defaultValue);
+void _fillMatrixDefaultValue(double _matrix[SM][SM], double _initValue);
 void _fillMatrixNull(double _matrix[SM][SM]);
+void _fillDynIntMatrix(int** _matrix, int _nR, int _nC, int _initValue);
+void _fillDynDoubleMatrix(double** _matrix, int _nR, int _nC, double _initValue);
+
 void _fillLocalStiffnessMatrix(double _matrix[SM][SM], Bar* _bar);
 void _fillReducedRotationMatrix(double _matrix[RM][RM], Bar* _bar);
 void _fillRotationMatrix(double _matrix[SM][SM], double _reducedMatrix[RM][RM]);
@@ -205,8 +208,6 @@ void freeFrameBarArray(FrameBarArray *_arr);
 void initGlobalSystem(GlobalSystem* _gSys);
 void insertNodeGlobalSystem(GlobalSystem* _gSys, Node _node);
 void insertFrameBarGlobalSystem(GlobalSystem* _gSys, FrameBar _bar);
-void _fillDynIntMatrix(int** _matrix, int _nR, int _nC, int _initValue);
-void _fillDynDoubleMatrix(double** _matrix, int _nR, int _nC, double _initValue);
 void _initStiffnessMatrix(GlobalSystem* _gSys, double _initValue);
 void _mountStiffnessMatrix(GlobalSystem* _gSys);
 void _freeStiffnessMatrix(GlobalSystem* _gSys);
