@@ -328,13 +328,22 @@ void _fillTransposeRotationMatrix(double _matrix[SM][SM], double _other[SM][SM])
 
 // --------------------------------------------------------------------------------
 
-void _fillGlobalStiffnessMatrix(double _matrix[SM][SM],
+void _fillGlobalStiffnessMatrix(double _matrix[SM][SM], double _rotation[SM][SM],
                                 double _tRotation[SM][SM], double _local[SM][SM])
 {
+    double product[12][12];
     for(int i = 0; i < SM; i++) {
         for(int j = 0; j < SM; j++) {
             for(int k = 0; k < SM; k++) {
-                _matrix[i][j] += _tRotation[i][k] * _local[k][j];
+                product[i][j] += _tRotation[i][k] * _local[k][j];
+            }
+        }
+    }
+
+    for(int i = 0; i < SM; i++) {
+        for(int j = 0; j < SM; j++) {
+            for(int k = 0; k < SM; k++) {
+                _matrix[i][j] += product[i][k] * _rotation[k][j];
             }
         }
     }
@@ -354,6 +363,7 @@ void setStiffnessMatrix(StiffnessMatrix* _sMatrix, Bar* _associatedBar)
     _fillRotationMatrix(_sMatrix->rotation, _sMatrix->reducedRotation);
     _fillTransposeRotationMatrix(_sMatrix->transposeRotation, _sMatrix->rotation);
     _fillGlobalStiffnessMatrix(_sMatrix->global,
+                               _sMatrix->rotation,
                                _sMatrix->transposeRotation,
                                _sMatrix->local);
 }

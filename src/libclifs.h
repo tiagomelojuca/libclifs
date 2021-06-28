@@ -188,7 +188,7 @@ void _fillLocalStiffnessMatrix(double _matrix[SM][SM], Bar* _bar);
 void _fillReducedRotationMatrix(double _matrix[RM][RM], Bar* _bar);
 void _fillRotationMatrix(double _matrix[SM][SM], double _reducedMatrix[RM][RM]);
 void _fillTransposeRotationMatrix(double _matrix[SM][SM], double _other[SM][SM]);
-void _fillGlobalStiffnessMatrix(double _matrix[SM][SM],
+void _fillGlobalStiffnessMatrix(double _matrix[SM][SM], double _rotation[SM][SM],
                                 double _tRotation[SM][SM], double _local[SM][SM]);
 void setStiffnessMatrix(StiffnessMatrix* _sMatrix, Bar* _associatedBar);
 
