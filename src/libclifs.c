@@ -1043,23 +1043,37 @@ void _freeVecDisplacementsConstrained(GlobalSystem* _gSys)
 
 // --------------------------------------------------------------------------------
 
-void _initDisplacementsFree(GlobalSystem* _gSys, double _initValue)
+void _initVecDisplacementsFree(GlobalSystem* _gSys, double _initValue)
+{
+    const int nEqFree = _gSys->numEqFreedoms;
+
+    if(_gSys->vecDisplacementsFree == NULL) {
+        _gSys->vecDisplacementsFree = malloc(nEqFree * sizeof(double*));
+        for(int i = 0; i < nEqFree; i++) {
+            _gSys->vecDisplacementsFree[i] = malloc(1 * sizeof(double));
+        }
+    }
+    
+    _fillDynDoubleMatrix(_gSys->vecDisplacementsFree, nEqFree, 1, _initValue);
+}
+
+// --------------------------------------------------------------------------------
+
+void _mountVecDisplacementsFree(GlobalSystem* _gSys)
 {
     //
 }
 
 // --------------------------------------------------------------------------------
 
-void _mountDisplacementsFree(GlobalSystem* _gSys)
+void _freeVecDisplacementsFree(GlobalSystem* _gSys)
 {
-    //
-}
+    for(int i = 0; i < _gSys->numEqFreedoms; i++) {
+        double* currentPtr = _gSys->vecDisplacementsFree[i];
+        free(currentPtr);
+    } free(_gSys->vecDisplacementsFree);
 
-// --------------------------------------------------------------------------------
-
-void _freeDisplacementsFree(GlobalSystem* _gSys)
-{
-    //
+    _gSys->vecDisplacementsFree = NULL;
 }
 
 // --------------------------------------------------------------------------------
@@ -1083,7 +1097,7 @@ void _initAllGlobalMatrix(GlobalSystem* _gSys)
     _initVecLoadsDOFFrees(_gSys, defaultValueAsDouble);
     _initVecLoadsDOFConstrained(_gSys, defaultValueAsDouble);
     _initVecDisplacementsConstrained(_gSys, defaultValueAsDouble);
-    _initDisplacementsFree(_gSys, defaultValueAsDouble);
+    _initVecDisplacementsFree(_gSys, defaultValueAsDouble);
 }
 
 // --------------------------------------------------------------------------------
@@ -1104,14 +1118,14 @@ void _mountAllGlobalMatrix(GlobalSystem* _gSys)
     _mountVecLoadsDOFFrees(_gSys);
     _mountVecLoadsDOFConstrained(_gSys);
     _mountVecDisplacementsConstrained(_gSys);
-    _mountDisplacementsFree(_gSys);
+    _mountVecDisplacementsFree(_gSys);
 }
 
 // --------------------------------------------------------------------------------
 
 void _freeAllGlobalMatrix(GlobalSystem* _gSys)
 {
-    _freeDisplacementsFree(_gSys);
+    _freeVecDisplacementsFree(_gSys);
     _freeVecDisplacementsConstrained(_gSys);
     _freeVecLoadsDOFConstrained(_gSys);
     _freeVecLoadsDOFFrees(_gSys);

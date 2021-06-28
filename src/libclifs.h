@@ -264,9 +264,9 @@ void _initVecDisplacementsConstrained(GlobalSystem* _gSys, double _initValue);
 void _mountVecDisplacementsConstrained(GlobalSystem* _gSys);
 void _freeVecDisplacementsConstrained(GlobalSystem* _gSys);
 
-void _initDisplacementsFree(GlobalSystem* _gSys, double _initValue);
-void _mountDisplacementsFree(GlobalSystem* _gSys);
-void _freeDisplacementsFree(GlobalSystem* _gSys);
+void _initVecDisplacementsFree(GlobalSystem* _gSys, double _initValue);
+void _mountVecDisplacementsFree(GlobalSystem* _gSys);
+void _freeVecDisplacementsFree(GlobalSystem* _gSys);
 
 void _initAllGlobalMatrix(GlobalSystem* _gSys);
 void _mountAllGlobalMatrix(GlobalSystem* _gSys);
