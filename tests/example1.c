@@ -65,7 +65,7 @@ int main()
     printf("Number of FrameBars: %i\n", g.framebarsArray.used);
     printf("Number of Equations: %i\n", g.numEquations);
     printf("Number of Freedoms: %i\n", g.numEqFreedoms);
-    printf("Number of Constraints: %i\n", g.numEqConstraint);
+    printf("Number of Constraints: %i\n", g.numEqConstraints);
     printf("\n");
 
     mountGlobalSystem(&g);
