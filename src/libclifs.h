@@ -148,6 +148,7 @@ typedef struct globalSystem {
     double** vecLoadsDOFConstrained;
     double** vecDisplacementsConstrained;
     double** vecDisplacementsFree;
+    double** vecSupportReactions;
 } GlobalSystem;
 
 // --------------------------------------------------------------------------------
@@ -260,6 +261,10 @@ void _freeVecDisplacementsConstrained(GlobalSystem* _gSys);
 void _initVecDisplacementsFree(GlobalSystem* _gSys, double _initValue);
 void _mountVecDisplacementsFree(GlobalSystem* _gSys);
 void _freeVecDisplacementsFree(GlobalSystem* _gSys);
+
+void _initVecSupportReactions(GlobalSystem* _gSys, double _initValue);
+void _mountVecSupportReactions(GlobalSystem* _gSys);
+void _freeVecSupportReactions(GlobalSystem* _gSys);
 
 void _initAllGlobalMatrix(GlobalSystem* _gSys);
 void _mountAllGlobalMatrix(GlobalSystem* _gSys);

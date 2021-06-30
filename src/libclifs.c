@@ -1093,6 +1093,40 @@ void _freeVecDisplacementsFree(GlobalSystem* _gSys)
 
 // --------------------------------------------------------------------------------
 
+void _initVecSupportReactions(GlobalSystem* _gSys, double _initValue)
+{
+    const int nEqFix = _gSys->numEqConstraints;
+
+    if(_gSys->vecSupportReactions == NULL) {
+        _gSys->vecSupportReactions = malloc(nEqFix * sizeof(double*));
+        for(int i = 0; i < nEqFix; i++) {
+            _gSys->vecSupportReactions[i] = malloc(1 * sizeof(double));
+        }
+    }
+    
+    _fillDynDoubleMatrix(_gSys->vecSupportReactions, nEqFix, 1, _initValue);
+}
+
+// --------------------------------------------------------------------------------
+
+void _mountVecSupportReactions(GlobalSystem* _gSys)
+{
+}
+
+// --------------------------------------------------------------------------------
+
+void _freeVecSupportReactions(GlobalSystem* _gSys)
+{
+    for(int i = 0; i < _gSys->numEqConstraints; i++) {
+        double* currentPtr = _gSys->vecSupportReactions[i];
+        free(currentPtr);
+    } free(_gSys->vecSupportReactions);
+
+    _gSys->vecSupportReactions = NULL;
+}
+
+// --------------------------------------------------------------------------------
+
 void _initAllGlobalMatrix(GlobalSystem* _gSys)
 {
     const int defaultValue = 0;
@@ -1112,7 +1146,9 @@ void _initAllGlobalMatrix(GlobalSystem* _gSys)
     _initVecLoadsDOFFrees(_gSys, defaultValueAsDouble);
     _initVecLoadsDOFConstrained(_gSys, defaultValueAsDouble);
     _initVecDisplacementsConstrained(_gSys, defaultValueAsDouble);
+
     _initVecDisplacementsFree(_gSys, defaultValueAsDouble);
+    _initVecSupportReactions(_gSys, defaultValueAsDouble);
 }
 
 // --------------------------------------------------------------------------------
@@ -1133,14 +1169,18 @@ void _mountAllGlobalMatrix(GlobalSystem* _gSys)
     _mountVecLoadsDOFFrees(_gSys);
     _mountVecLoadsDOFConstrained(_gSys);
     _mountVecDisplacementsConstrained(_gSys);
+
     _mountVecDisplacementsFree(_gSys);
+    _mountVecSupportReactions(_gSys);
 }
 
 // --------------------------------------------------------------------------------
 
 void _freeAllGlobalMatrix(GlobalSystem* _gSys)
 {
+    _freeVecSupportReactions(_gSys);
     _freeVecDisplacementsFree(_gSys);
+    
     _freeVecDisplacementsConstrained(_gSys);
     _freeVecLoadsDOFConstrained(_gSys);
     _freeVecLoadsDOFFrees(_gSys);
