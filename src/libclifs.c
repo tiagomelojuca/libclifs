@@ -1113,6 +1113,23 @@ void _initVecSupportReactions(GlobalSystem* _gSys, double _initValue)
 
 void _mountVecSupportReactions(GlobalSystem* _gSys)
 {
+    const int nEqFree = _gSys->numEqFreedoms;
+    const int nEqFix = _gSys->numEqConstraints;
+
+    const bool isSingular = _isMatrixSingular(_gSys->mtxDOFFrees, nEqFree);
+
+    if(isSingular) {
+        _fillDynDoubleMatrix(_gSys->vecSupportReactions, nEqFix, 1, -1.0);
+        return;
+    }
+
+    _multiplyDynMatrix(_gSys->vecSupportReactions,
+                        _gSys->mtxPartitionBot, _gSys->vecDisplacementsFree,
+                        nEqFix, nEqFree, nEqFix, 1);
+
+    for(int i = 0; i < nEqFix; i++) {
+        _gSys->vecSupportReactions[i][0] -= _gSys->vecLoadsDOFConstrained[i][0];
+    }
 }
 
 // --------------------------------------------------------------------------------
