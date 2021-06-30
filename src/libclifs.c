@@ -1038,40 +1038,45 @@ void _initVecDisplacementsFree(GlobalSystem* _gSys, double _initValue)
 
 void _mountVecDisplacementsFree(GlobalSystem* _gSys)
 {
-    // Aliases
     const int nEqFree = _gSys->numEqFreedoms;
     const int sizeVecPermut = nEqFree + 1;
 
-    // Alloc mem
-    int* vecPermut = malloc(sizeVecPermut * sizeof(int));
+    const bool isSingular = _isMatrixSingular(_gSys->mtxDOFFrees, nEqFree);
+    
+    if(!isSingular) {
+        // Alloc mem
+        int* vecPermut = malloc(sizeVecPermut * sizeof(int));
 
-    double** mtxFree = malloc(nEqFree * sizeof(double*));
-    for(int i = 0; i < nEqFree; i++) {
-        mtxFree[i] = malloc(nEqFree * sizeof(double));
-    } _copyDynDoubleMatrix(mtxFree, _gSys->mtxDOFFrees, nEqFree, nEqFree);
+        double** mtxFree = malloc(nEqFree * sizeof(double*));
+        for(int i = 0; i < nEqFree; i++) {
+            mtxFree[i] = malloc(nEqFree * sizeof(double));
+        } _copyDynDoubleMatrix(mtxFree, _gSys->mtxDOFFrees, nEqFree, nEqFree);
 
-    double** mtxInverse = malloc(nEqFree * sizeof(double*));
-    for(int i = 0; i < nEqFree; i++) {
-        mtxInverse[i] = malloc(nEqFree * sizeof(double));
-    } _copyDynDoubleMatrix(mtxInverse, _gSys->mtxDOFFrees, nEqFree, nEqFree);
+        double** mtxInverse = malloc(nEqFree * sizeof(double*));
+        for(int i = 0; i < nEqFree; i++) {
+            mtxInverse[i] = malloc(nEqFree * sizeof(double));
+        } _copyDynDoubleMatrix(mtxInverse, _gSys->mtxDOFFrees, nEqFree, nEqFree);
 
-    // Calc vec
-    _lupDecompose(mtxFree, nEqFree, vecPermut);
-    _lupInvert(mtxInverse, mtxFree, vecPermut, nEqFree);
-    _multiplyDynMatrix(_gSys->vecDisplacementsFree,
-                       mtxInverse, _gSys->vecLoadsDOFFrees,
-                       nEqFree, nEqFree, nEqFree, 1);
+        // Calc vec
+        _lupDecompose(mtxFree, nEqFree, vecPermut);
+        _lupInvert(mtxInverse, mtxFree, vecPermut, nEqFree);
+        _multiplyDynMatrix(_gSys->vecDisplacementsFree,
+                        mtxInverse, _gSys->vecLoadsDOFFrees,
+                        nEqFree, nEqFree, nEqFree, 1);
 
-    // Free mem
-    for(int i = 0; i < nEqFree; i++) {
-        double* currentPtr = mtxFree[i];
-        free(currentPtr);
-    } free(mtxFree);
+        // Free mem
+        for(int i = 0; i < nEqFree; i++) {
+            double* currentPtr = mtxFree[i];
+            free(currentPtr);
+        } free(mtxFree);
 
-    for(int i = 0; i < nEqFree; i++) {
-        double* currentPtr = mtxInverse[i];
-        free(currentPtr);
-    } free(mtxInverse);
+        for(int i = 0; i < nEqFree; i++) {
+            double* currentPtr = mtxInverse[i];
+            free(currentPtr);
+        } free(mtxInverse);
+    } else {
+        _fillDynDoubleMatrix(_gSys->vecDisplacementsFree, nEqFree, 1, -1.0);
+    }
 }
 
 // --------------------------------------------------------------------------------
