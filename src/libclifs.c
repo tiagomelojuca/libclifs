@@ -478,7 +478,9 @@ void initGlobalSystem(GlobalSystem* _gSys)
     _gSys->vecLoadsDOFFrees = NULL;
     _gSys->vecLoadsDOFConstrained = NULL;
     _gSys->vecDisplacementsConstrained = NULL;
+
     _gSys->vecDisplacementsFree = NULL;
+    _gSys->vecSupportReactions = NULL;
 
     initNodeArray(pNodeArray, 1);
     initFrameBarArray(pFrameBarArray, 1);
