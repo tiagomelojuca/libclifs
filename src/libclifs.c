@@ -482,6 +482,8 @@ void initGlobalSystem(GlobalSystem* _gSys)
     _gSys->vecDisplacementsFree = NULL;
     _gSys->vecSupportReactions = NULL;
 
+    _gSys->isStiffMatrixSingular = true;
+
     initNodeArray(pNodeArray, 1);
     initFrameBarArray(pFrameBarArray, 1);
 }
@@ -768,11 +770,15 @@ void _initDOFFreesMatrix(GlobalSystem* _gSys, double _initValue)
 
 void _mountDOFFreesMatrix(GlobalSystem* _gSys)
 {
+    const int nEqFree = _gSys->numEqFreedoms;
+    
     for(int i = 0; i < _gSys->numEqFreedoms; i++) {
         for(int j = 0; j < _gSys->numEqFreedoms; j++) {
             _gSys->mtxDOFFrees[i][j] = _gSys->mtxStiffness[i][j];
         }
     }
+
+    _gSys->isStiffMatrixSingular = _isMatrixSingular(_gSys->mtxDOFFrees, nEqFree);
 }
 
 // --------------------------------------------------------------------------------
@@ -1043,10 +1049,9 @@ void _mountVecDisplacementsFree(GlobalSystem* _gSys)
     // Aliases
     const int nEqFree = _gSys->numEqFreedoms;
     const int sizeVecPermut = nEqFree + 1;
-    const bool isSingular = _isMatrixSingular(_gSys->mtxDOFFrees, nEqFree);
     
     // Check mtx
-    if(isSingular) {
+    if(_gSys->isStiffMatrixSingular) {
         _fillDynDoubleMatrix(_gSys->vecDisplacementsFree, nEqFree, 1, -1.0);
         return;
     }
@@ -1118,9 +1123,7 @@ void _mountVecSupportReactions(GlobalSystem* _gSys)
     const int nEqFree = _gSys->numEqFreedoms;
     const int nEqFix = _gSys->numEqConstraints;
 
-    const bool isSingular = _isMatrixSingular(_gSys->mtxDOFFrees, nEqFree);
-
-    if(isSingular) {
+    if(_gSys->isStiffMatrixSingular) {
         _fillDynDoubleMatrix(_gSys->vecSupportReactions, nEqFix, 1, -1.0);
         return;
     }
@@ -1236,6 +1239,8 @@ void freeGlobalSystem(GlobalSystem* _gSys)
     _freeAllGlobalMatrix(_gSys);
     freeFrameBarArray(pFrameBarArray);
     freeNodeArray(pNodeArray);
+
+    _gSys->isStiffMatrixSingular = true;
 
     _gSys->numEqConstraints = 0;
     _gSys->numEqFreedoms = 0;

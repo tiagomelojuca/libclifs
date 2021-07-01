@@ -149,6 +149,7 @@ typedef struct globalSystem {
     double** vecDisplacementsConstrained;
     double** vecDisplacementsFree;
     double** vecSupportReactions;
+    bool isStiffMatrixSingular;
 } GlobalSystem;
 
 // --------------------------------------------------------------------------------
