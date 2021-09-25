@@ -14,6 +14,7 @@
 
 int main()
 {
+    // PREPARING OUR INPUTS -------------------------------------------------------
     Point    avec = createPoint(VX, VY, VZ);
     Section  rect = createSection(A, I, I, I);
     Material conc = createMaterial(E, G);
@@ -26,7 +27,9 @@ int main()
     NodalLoad l3 = createNodalLoad(0.000, 17.800,   0.000,  0.000,  0.000,  0.000);
     NodalLoad l4 = createNodalLoad(0.000,  0.000,  -4.450,  0.000,-10.858,  0.000);
     NodalLoad l5 = createNodalLoad(0.000,  0.000,   0.000,  0.000,  0.000,  0.000);
+    // ----------------------------------------------------------------------------
 
+    // MOUNTING AND SOLVING THE FRAME ---------------------------------------------
     Frame frame = createFrame();
 
     pushFrameNode(frame, createPoint(0.000,  0.000,  0.000), allFix,  allFix,  l1);
@@ -41,12 +44,17 @@ int main()
     pushFrameBar(frame, 4, 5, avec, &conc, &rect);
 
     solveFrame(frame);
+    // ----------------------------------------------------------------------------
 
+    // PRINTING THE RESULTS -------------------------------------------------------
     printf("SUPPORT REACTIONS:\n");
     for(int i = 0; i < frame->numEqConstraints; i++) {
         printf("%.2f\n", frame->vecSupportReactions[i][0]);
     }
+    // ----------------------------------------------------------------------------
 
+    // FREEING THE FRAME MEMORY ---------------------------------------------------
     freeFrame(frame);
     return 0;
+    // ----------------------------------------------------------------------------
 }
