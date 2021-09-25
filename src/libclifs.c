@@ -518,6 +518,13 @@ void insertFrameBarGlobalSystem(GlobalSystem* _gSys, FrameBar _bar)
 
 // --------------------------------------------------------------------------------
 
+Node* getNode(GlobalSystem* _gSys, unsigned int _index)
+{
+    return &_gSys->nodeArray.nodes[_index - 1];
+}
+
+// --------------------------------------------------------------------------------
+
 void _initConstraintsMatrix(GlobalSystem* _gSys, int _initValue)
 {
     const int nNodes = _gSys->nodeArray.used;

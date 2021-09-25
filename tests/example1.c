@@ -41,13 +41,13 @@ int main()
     insertNodeGlobalSystem(g, n4);
     insertNodeGlobalSystem(g, n5);
 
-    FrameBar b1 = createFrameBar(&g->nodeArray.nodes[0], &g->nodeArray.nodes[1],
+    FrameBar b1 = createFrameBar(getNode(g, 1), getNode(g, 2),
                                  auxvec, &concrete, &rectangle);
-    FrameBar b2 = createFrameBar(&g->nodeArray.nodes[1], &g->nodeArray.nodes[2],
+    FrameBar b2 = createFrameBar(getNode(g, 2), getNode(g, 3),
                                  auxvec, &concrete, &rectangle);
-    FrameBar b3 = createFrameBar(&g->nodeArray.nodes[2], &g->nodeArray.nodes[3],
+    FrameBar b3 = createFrameBar(getNode(g, 3), getNode(g, 4),
                                  auxvec, &concrete, &rectangle);
-    FrameBar b4 = createFrameBar(&g->nodeArray.nodes[3], &g->nodeArray.nodes[4],
+    FrameBar b4 = createFrameBar(getNode(g, 4), getNode(g, 5),
                                  auxvec, &concrete, &rectangle);
 
     insertFrameBarGlobalSystem(g, b1);

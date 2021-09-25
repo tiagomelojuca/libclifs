@@ -214,6 +214,7 @@ void freeFrameBarArray(FrameBarArray *_arr);
 void initGlobalSystem(GlobalSystem* _gSys);
 void insertNodeGlobalSystem(GlobalSystem* _gSys, Node _node);
 void insertFrameBarGlobalSystem(GlobalSystem* _gSys, FrameBar _bar);
+Node* getNode(GlobalSystem* _gSys, unsigned int _index);
 
 void _initConstraintsMatrix(GlobalSystem* _gSys, int _initValue);
 void _mountConstraintsMatrix(GlobalSystem* _gSys);
