@@ -13,12 +13,10 @@
 #define VZ 0.707
 
 int main()
-{   
-    GlobalSystem* g = createGlobalSystem();
-
-    Point auxvec = createPoint(VX, VY, VZ);
-    Material concrete = createMaterial(E, G);
-    Section rectangle = createSection(A, I, I, I);
+{
+    Point    avec = createPoint(VX, VY, VZ);
+    Section  rect = createSection(A, I, I, I);
+    Material conc = createMaterial(E, G);
 
     DegreesOfFreedom allFree = createDegreesOfFreedom(true, true, true);
     DegreesOfFreedom allFix = createDegreesOfFreedom(false, false, false);
@@ -34,6 +32,8 @@ int main()
     Node n3 = createNode(createPoint(2.440,  0.000,  2.440), allFree, allFree, l3);
     Node n4 = createNode(createPoint(4.880,  0.000,  2.440), allFree, allFree, l4);
     Node n5 = createNode(createPoint(7.320,  2.440,  0.000), allFix,  allFix,  l5);
+
+    GlobalSystem* g = createGlobalSystem();
     
     insertNodeGlobalSystem(g, n1);
     insertNodeGlobalSystem(g, n2);
@@ -41,14 +41,10 @@ int main()
     insertNodeGlobalSystem(g, n4);
     insertNodeGlobalSystem(g, n5);
 
-    FrameBar b1 = createFrameBar(getNode(g, 1), getNode(g, 2),
-                                 auxvec, &concrete, &rectangle);
-    FrameBar b2 = createFrameBar(getNode(g, 2), getNode(g, 3),
-                                 auxvec, &concrete, &rectangle);
-    FrameBar b3 = createFrameBar(getNode(g, 3), getNode(g, 4),
-                                 auxvec, &concrete, &rectangle);
-    FrameBar b4 = createFrameBar(getNode(g, 4), getNode(g, 5),
-                                 auxvec, &concrete, &rectangle);
+    FrameBar b1 = createFrameBar(getNode(g, 1), getNode(g, 2), avec, &conc, &rect);
+    FrameBar b2 = createFrameBar(getNode(g, 2), getNode(g, 3), avec, &conc, &rect);
+    FrameBar b3 = createFrameBar(getNode(g, 3), getNode(g, 4), avec, &conc, &rect);
+    FrameBar b4 = createFrameBar(getNode(g, 4), getNode(g, 5), avec, &conc, &rect);
 
     insertFrameBarGlobalSystem(g, b1);
     insertFrameBarGlobalSystem(g, b2);
