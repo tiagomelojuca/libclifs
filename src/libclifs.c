@@ -1280,3 +1280,45 @@ void freeGlobalSystem(GlobalSystem* _gSys)
 }
 
 // --------------------------------------------------------------------------------
+
+Frame createFrame()
+{
+    return createGlobalSystem();
+}
+
+// --------------------------------------------------------------------------------
+
+void pushFrameNode(Frame _f, Point _p,
+                   DegreesOfFreedom _t, DegreesOfFreedom _r,
+                   NodalLoad _l)
+{
+    insertNodeGlobalSystem(_f, createNode(_p, _t, _r, _l));
+}
+
+// --------------------------------------------------------------------------------
+
+void pushFrameBar(Frame _f, unsigned int _nid1, unsigned int _nid2, Point _auxvec,
+                  Material* _material, Section* _section)
+{
+    Node* n1 = getNode(_f, _nid1);
+    Node* n2 = getNode(_f, _nid2);
+    FrameBar b = createFrameBar(n1, n2, _auxvec, _material, _section);
+
+    insertFrameBarGlobalSystem(_f, b);
+}
+
+// --------------------------------------------------------------------------------
+
+void solveFrame(Frame _f)
+{
+    mountGlobalSystem(_f);
+}
+
+// --------------------------------------------------------------------------------
+
+void freeFrame(Frame _f)
+{
+    freeGlobalSystem(_f);
+}
+
+// --------------------------------------------------------------------------------

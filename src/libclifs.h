@@ -156,6 +156,8 @@ typedef struct globalSystem {
     bool isStiffMatrixSingular;
 } GlobalSystem;
 
+typedef GlobalSystem* Frame;
+
 // --------------------------------------------------------------------------------
 
 void setPointCoords(Point* _point, double _x, double _y, double _z);
@@ -280,6 +282,15 @@ GlobalSystem* createGlobalSystem();
 void mountGlobalSystem(GlobalSystem* _gSys);
 void cleanGlobalSystem(GlobalSystem* _gSys);
 void freeGlobalSystem(GlobalSystem* _gSys);
+
+Frame createFrame();
+void pushFrameNode(Frame _f, Point _p,
+                   DegreesOfFreedom _t, DegreesOfFreedom _r,
+                   NodalLoad _l);
+void pushFrameBar(Frame _f, unsigned int _nid1, unsigned int _nid2, Point _auxvec,
+                  Material* _material, Section* _section);
+void solveFrame(Frame _f);
+void freeFrame(Frame _f);
 
 // MAKE THIS HEADER FILE COMPATIBLE WITH C++ CODE TOO (END) -----------------------
 #ifdef __cplusplus
