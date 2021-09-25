@@ -11,12 +11,14 @@
 
 #include <stdbool.h>
 
-#include "definitions.h"
+// --------------------------------------------------------------------------------
+#define MTX_SIZE 12
+// --------------------------------------------------------------------------------
 
-void _fillMatrixDefaultValue(double _matrix[SM][SM], double _initValue);
-void _fillMatrixNull(double _matrix[SM][SM]);
-void _fillDynIntMatrix(int** _matrix, int _nR, int _nC, int _initValue);
-void _fillDynDoubleMatrix(double** _matrix, int _nR, int _nC, double _initValue);
+void _fillMatrixDefaultValue(double _matrix[MTX_SIZE][MTX_SIZE], double _initVal);
+void _fillMatrixNull(double _matrix[MTX_SIZE][MTX_SIZE]);
+void _fillDynIntMatrix(int** _matrix, int _nR, int _nC, int _initVal);
+void _fillDynDoubleMatrix(double** _matrix, int _nR, int _nC, double _initVal);
 void _copyDynDoubleMatrix(double** _matrix, double** _other, int _nR, int _nC);
 void _multiplyDynMatrix(double** _matrix, double** _other1, double** _other2,
                         int _rOther1, int _cOther1, int _rOther2, int _cOther2);

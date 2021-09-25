@@ -2,7 +2,6 @@
 #include <stdlib.h>
 
 #include "../src/libclifs.h"
-#include "../src/utils.h"
 
 #define A  0.01
 #define I  0.00001

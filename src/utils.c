@@ -12,40 +12,40 @@
 
 // --------------------------------------------------------------------------------
 
-void _fillMatrixDefaultValue(double _matrix[SM][SM], double _initValue)
+void _fillMatrixDefaultValue(double _matrix[MTX_SIZE][MTX_SIZE], double _initVal)
 {
-    for(int i = 0; i < SM; i++) {
-        for(int j = 0; j < SM; j++) {
-            _matrix[i][j] = _initValue;
+    for(int i = 0; i < MTX_SIZE; i++) {
+        for(int j = 0; j < MTX_SIZE; j++) {
+            _matrix[i][j] = _initVal;
         }
     }
 }
 
 // --------------------------------------------------------------------------------
 
-void _fillMatrixNull(double _matrix[SM][SM])
+void _fillMatrixNull(double _matrix[MTX_SIZE][MTX_SIZE])
 {
     _fillMatrixDefaultValue(_matrix, 0.0);
 }
 
 // --------------------------------------------------------------------------------
 
-void _fillDynIntMatrix(int** _matrix, int _nR, int _nC, int _initValue)
+void _fillDynIntMatrix(int** _matrix, int _nR, int _nC, int _initVal)
 {
     for(int i = 0; i < _nR; i++) {
         for(int j = 0; j < _nC; j++) {
-            _matrix[i][j] = _initValue;
+            _matrix[i][j] = _initVal;
         }
     }
 }
 
 // --------------------------------------------------------------------------------
 
-void _fillDynDoubleMatrix(double** _matrix, int _nR, int _nC, double _initValue)
+void _fillDynDoubleMatrix(double** _matrix, int _nR, int _nC, double _initVal)
 {
     for(int i = 0; i < _nR; i++) {
         for(int j = 0; j < _nC; j++) {
-            _matrix[i][j] = _initValue;
+            _matrix[i][j] = _initVal;
         }
     }
 }

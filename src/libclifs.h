@@ -31,7 +31,11 @@ extern "C" {
 #include <stddef.h>
 #include <stdbool.h>
 
-#include "definitions.h"
+// --------------------------------------------------------------------------------
+#define DOF    6        // Degrees of Freedom
+#define SM     12       // Size of Bar Matrix in the Space
+#define RM     3        // Size of Reduced Rotation Matrix
+// --------------------------------------------------------------------------------
 
 // TYPES DECLARATION
 // REMINDER TO MYSELF (SOURCE-> www.tutorialspoint.com/cprogramming/c_typedef.htm)
