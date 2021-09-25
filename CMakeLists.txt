@@ -11,3 +11,7 @@ ADD_LIBRARY(
     "${SRC_DIR}/libclifs.c"
     "${SRC_DIR}/utils.c"
 )
+
+set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/exe_obj")
+install(TARGETS clifs DESTINATION "lib")
+install(FILES "${SRC_DIR}/libclifs.h" DESTINATION "inc")
