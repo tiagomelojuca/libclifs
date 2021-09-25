@@ -275,7 +275,9 @@ void _initAllGlobalMatrix(GlobalSystem* _gSys);
 void _mountAllGlobalMatrix(GlobalSystem* _gSys);
 void _freeAllGlobalMatrix(GlobalSystem* _gSys);
 
+GlobalSystem* createGlobalSystem();
 void mountGlobalSystem(GlobalSystem* _gSys);
+void cleanGlobalSystem(GlobalSystem* _gSys);
 void freeGlobalSystem(GlobalSystem* _gSys);
 
 // MAKE THIS HEADER FILE COMPATIBLE WITH C++ CODE TOO (END) -----------------------

@@ -1231,6 +1231,15 @@ void _freeAllGlobalMatrix(GlobalSystem* _gSys)
 
 // --------------------------------------------------------------------------------
 
+GlobalSystem* createGlobalSystem()
+{
+    GlobalSystem* gSys = (GlobalSystem*) malloc(sizeof(GlobalSystem));
+    initGlobalSystem(gSys);
+    return gSys;
+}
+
+// --------------------------------------------------------------------------------
+
 void mountGlobalSystem(GlobalSystem* _gSys)
 {
     _initAllGlobalMatrix(_gSys);
@@ -1239,7 +1248,7 @@ void mountGlobalSystem(GlobalSystem* _gSys)
 
 // --------------------------------------------------------------------------------
 
-void freeGlobalSystem(GlobalSystem* _gSys)
+void cleanGlobalSystem(GlobalSystem* _gSys)
 {
     NodeArray* pNodeArray = &(_gSys->nodeArray);
     FrameBarArray* pFrameBarArray = &(_gSys->framebarsArray);
@@ -1253,6 +1262,14 @@ void freeGlobalSystem(GlobalSystem* _gSys)
     _gSys->numEqConstraints = 0;
     _gSys->numEqFreedoms = 0;
     _gSys->numEquations = 0;
+}
+
+// --------------------------------------------------------------------------------
+
+void freeGlobalSystem(GlobalSystem* _gSys)
+{
+    cleanGlobalSystem(_gSys);
+    free(_gSys);
 }
 
 // --------------------------------------------------------------------------------

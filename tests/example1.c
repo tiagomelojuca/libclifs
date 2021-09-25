@@ -14,8 +14,7 @@
 
 int main()
 {   
-    GlobalSystem g;
-    initGlobalSystem(&g);
+    GlobalSystem* g = createGlobalSystem();
 
     Point auxvec = createPoint(VX, VY, VZ);
     Material concrete = createMaterial(E, G);
@@ -36,33 +35,33 @@ int main()
     Node n4 = createNode(createPoint(4.880,  0.000,  2.440), allFree, allFree, l4);
     Node n5 = createNode(createPoint(7.320,  2.440,  0.000), allFix,  allFix,  l5);
     
-    insertNodeGlobalSystem(&g, n1);
-    insertNodeGlobalSystem(&g, n2);
-    insertNodeGlobalSystem(&g, n3);
-    insertNodeGlobalSystem(&g, n4);
-    insertNodeGlobalSystem(&g, n5);
+    insertNodeGlobalSystem(g, n1);
+    insertNodeGlobalSystem(g, n2);
+    insertNodeGlobalSystem(g, n3);
+    insertNodeGlobalSystem(g, n4);
+    insertNodeGlobalSystem(g, n5);
 
-    FrameBar b1 = createFrameBar(&g.nodeArray.nodes[0], &g.nodeArray.nodes[1],
+    FrameBar b1 = createFrameBar(&g->nodeArray.nodes[0], &g->nodeArray.nodes[1],
                                  auxvec, &concrete, &rectangle);
-    FrameBar b2 = createFrameBar(&g.nodeArray.nodes[1], &g.nodeArray.nodes[2],
+    FrameBar b2 = createFrameBar(&g->nodeArray.nodes[1], &g->nodeArray.nodes[2],
                                  auxvec, &concrete, &rectangle);
-    FrameBar b3 = createFrameBar(&g.nodeArray.nodes[2], &g.nodeArray.nodes[3],
+    FrameBar b3 = createFrameBar(&g->nodeArray.nodes[2], &g->nodeArray.nodes[3],
                                  auxvec, &concrete, &rectangle);
-    FrameBar b4 = createFrameBar(&g.nodeArray.nodes[3], &g.nodeArray.nodes[4],
+    FrameBar b4 = createFrameBar(&g->nodeArray.nodes[3], &g->nodeArray.nodes[4],
                                  auxvec, &concrete, &rectangle);
 
-    insertFrameBarGlobalSystem(&g, b1);
-    insertFrameBarGlobalSystem(&g, b2);
-    insertFrameBarGlobalSystem(&g, b3);
-    insertFrameBarGlobalSystem(&g, b4);
+    insertFrameBarGlobalSystem(g, b1);
+    insertFrameBarGlobalSystem(g, b2);
+    insertFrameBarGlobalSystem(g, b3);
+    insertFrameBarGlobalSystem(g, b4);
 
-    mountGlobalSystem(&g);
+    mountGlobalSystem(g);
 
     printf("SUPPORT REACTIONS:\n");
-    for(int i = 0; i < g.numEqConstraints; i++) {
-        printf("%.2f\n", g.vecSupportReactions[i][0]);
+    for(int i = 0; i < g->numEqConstraints; i++) {
+        printf("%.2f\n", g->vecSupportReactions[i][0]);
     }
 
-    freeGlobalSystem(&g);
+    freeGlobalSystem(g);
     return 0;
 }
