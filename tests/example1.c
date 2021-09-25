@@ -32,11 +32,11 @@ int main()
     // MOUNTING AND SOLVING THE FRAME ---------------------------------------------
     Frame frame = createFrame();
 
-    pushFrameNode(frame, createPoint(0.000,  0.000,  0.000), allFix,  allFix,  l1);
-    pushFrameNode(frame, createPoint(0.000,  0.000,  2.440), allFree, allFree, l2);
-    pushFrameNode(frame, createPoint(2.440,  0.000,  2.440), allFree, allFree, l3);
-    pushFrameNode(frame, createPoint(4.880,  0.000,  2.440), allFree, allFree, l4);
-    pushFrameNode(frame, createPoint(7.320,  2.440,  0.000), allFix,  allFix,  l5);
+    pushFrameNode(frame, 0.000, 0.000, 0.000, allFix,  allFix,  l1);
+    pushFrameNode(frame, 0.000, 0.000, 2.440, allFree, allFree, l2);
+    pushFrameNode(frame, 2.440, 0.000, 2.440, allFree, allFree, l3);
+    pushFrameNode(frame, 4.880, 0.000, 2.440, allFree, allFree, l4);
+    pushFrameNode(frame, 7.320, 2.440, 0.000, allFix,  allFix,  l5);
 
     pushFrameBar(frame, 1, 2, avec, &conc, &rect);
     pushFrameBar(frame, 2, 3, avec, &conc, &rect);

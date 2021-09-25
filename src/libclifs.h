@@ -284,7 +284,7 @@ void cleanGlobalSystem(GlobalSystem* _gSys);
 void freeGlobalSystem(GlobalSystem* _gSys);
 
 Frame createFrame();
-void pushFrameNode(Frame _f, Point _p,
+void pushFrameNode(Frame _f, double _x, double _y, double _z,
                    DegreesOfFreedom _t, DegreesOfFreedom _r,
                    NodalLoad _l);
 void pushFrameBar(Frame _f, unsigned int _nid1, unsigned int _nid2, Point _auxvec,

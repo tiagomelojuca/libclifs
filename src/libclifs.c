@@ -1288,11 +1288,11 @@ Frame createFrame()
 
 // --------------------------------------------------------------------------------
 
-void pushFrameNode(Frame _f, Point _p,
+void pushFrameNode(Frame _f, double _x, double _y, double _z,
                    DegreesOfFreedom _t, DegreesOfFreedom _r,
                    NodalLoad _l)
 {
-    insertNodeGlobalSystem(_f, createNode(_p, _t, _r, _l));
+    insertNodeGlobalSystem(_f, createNode(createPoint(_x, _y, _z), _t, _r, _l));
 }
 
 // --------------------------------------------------------------------------------
